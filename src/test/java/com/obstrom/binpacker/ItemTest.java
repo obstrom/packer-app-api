@@ -157,4 +157,52 @@ class ItemTest {
         assertEquals(weightAsKilogram.getUnit(), ItemUnits.Weight.KILOGRAM);
     }
 
+    @Test
+    public void givenValidDimensions_thenItem_shouldHaveCorrectVolume() {
+        // given
+        int width = 50;
+        int height = 20;
+        int depth = 30;
+        int weight = 200;
+
+        // then
+        Item item = new Item(width, height, depth, weight);
+
+        // should
+        assertEquals(item.getVolume().getValue(), 30000);
+        assertEquals(item.getVolume().getUnit(), ItemUnits.Volume.CUBIC_MILLIMETER);
+    }
+
+    @Test
+    public void givenZeroDimension_thenItem_shouldHaveZeroVolume() {
+        // given
+        int width = 50;
+        int height = 20;
+        int depth = 0;
+        int weight = 200;
+
+        // then
+        Item item = new Item(width, height, depth, weight);
+
+        // should
+        assertEquals(item.getVolume().getValue(), 0);
+        assertEquals(item.getVolume().getUnit(), ItemUnits.Volume.CUBIC_MILLIMETER);
+    }
+
+    @Test
+    public void givenDifferentUnit_thenItem_shouldHaveVolumeOfSameUnit() {
+        // given
+        double width = 0.5;
+        double height = 0.2;
+        double depth = 0.3;
+        double weight = 200;
+
+        // then
+        Item item = new Item(ItemUnits.Length.DECIMETER, ItemUnits.Weight.GRAM, width, height, depth, weight);
+
+        // should
+        assertEquals(item.getVolume().getValue(), 0.03);
+        assertEquals(item.getVolume().getUnit(), ItemUnits.Volume.CUBIC_DECIMETER);
+    }
+
 }

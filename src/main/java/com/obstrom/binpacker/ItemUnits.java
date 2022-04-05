@@ -4,7 +4,6 @@ import tech.units.indriya.unit.Units;
 
 import javax.measure.MetricPrefix;
 import javax.measure.Unit;
-import javax.measure.quantity.Length;
 
 public class ItemUnits {
 
@@ -25,6 +24,23 @@ public class ItemUnits {
         public static final Unit<javax.measure.quantity.Volume> CUBIC_CENTIMETER = MetricPrefix.CENTI(Units.CUBIC_METRE);
         public static final Unit<javax.measure.quantity.Volume> CUBIC_DECIMETER = MetricPrefix.DECI(Units.CUBIC_METRE);
         public static final Unit<javax.measure.quantity.Volume> CUBIC_METER = Units.CUBIC_METRE;
+
+        public static Unit<javax.measure.quantity.Volume> getVolumeByLengthUnit(Unit<javax.measure.quantity.Length> lengthUnit) {
+            switch (lengthUnit.toString()) {
+                case ("mm") -> {
+                    return CUBIC_MILLIMETER;
+                }
+                case ("cm") -> {
+                    return CUBIC_CENTIMETER;
+                }
+                case ("dm") -> {
+                    return CUBIC_DECIMETER;
+                }
+                default -> {
+                    return CUBIC_METER;
+                }
+            }
+        }
     }
 
 }

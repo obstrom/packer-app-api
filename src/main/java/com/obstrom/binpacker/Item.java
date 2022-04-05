@@ -10,6 +10,8 @@ import javax.measure.Quantity;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Mass;
+import javax.measure.quantity.Volume;
+import java.util.Objects;
 
 @Getter
 public class Item {
@@ -24,13 +26,13 @@ public class Item {
 
     private final Unit<Length> lengthUnit;
     private final Unit<Mass> weightUnit;
-    //private final Unit<Volume> volumeUnit;
+    private Unit<Volume> volumeUnit;
 
     private final Quantity<Length> width;
     private final Quantity<Length> height;
     private final Quantity<Length> depth;
     private final Quantity<Mass> weight;
-    //private final Quantity<Volume> volume;
+    private Quantity<Volume> volume;
 
     public Item(
             @NonNull Unit<Length> lengthUnit,
@@ -47,6 +49,7 @@ public class Item {
         this.depth = Quantities.getQuantity(depth, this.lengthUnit);
         this.weight = Quantities.getQuantity(weight, this.weightUnit);
         validate();
+        calculateVolume();
     }
 
     public Item(
@@ -88,6 +91,16 @@ public class Item {
 
     public Quantity<Mass> getWeightAsUnit(Unit<Mass> unit) {
         return this.weight.to(unit);
+    }
+
+    private void calculateVolume() {
+        Objects.requireNonNull(this.lengthUnit);
+
+        final double volumeValue = this.getWidth().getValue().doubleValue() * this.getDepth().getValue().doubleValue() * this.getHeight().getValue().doubleValue();
+        final Unit<Volume> volumeUnit = ItemUnits.Volume.getVolumeByLengthUnit(this.lengthUnit);
+
+        this.volume = Quantities.getQuantity(volumeValue, volumeUnit);
+        this.volumeUnit = volumeUnit;
     }
 
     private void validateDimensionsNotNegative() {

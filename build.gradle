@@ -30,4 +30,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    include 'com/obstrom/binpacker/**'
 }
