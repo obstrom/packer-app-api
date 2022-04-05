@@ -8,8 +8,7 @@ import javax.measure.Quantity;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Mass;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
 
@@ -22,7 +21,7 @@ class ItemTest {
         int weight = 200;
 
         // then
-        Item item = new Item(width, height, depth, weight);
+        Item item = new Item("Test item", width, height, depth, weight);
 
         // should
         assertEquals(item.getWidth().getValue(), 50);
@@ -36,6 +35,34 @@ class ItemTest {
     }
 
     @Test
+    public void givenTwoValidItemWithSameData_thenItems_shouldBeEqual() {
+        // given
+        int width = 50;
+        int height = 20;
+        int depth = 30;
+        int weight = 200;
+
+        Item itemOne = new Item("Test item", width, height, depth, weight);
+        Item itemTwo = new Item("Test item", width, height, depth, weight);
+
+        assertEquals(itemOne, itemTwo);
+    }
+
+    @Test
+    public void givenTwoValidItemWithSameData_thenItems_shouldBeHashedToSameHash() {
+        // given
+        int width = 50;
+        int height = 20;
+        int depth = 30;
+        int weight = 200;
+
+        Item itemOne = new Item("Test item", width, height, depth, weight);
+        Item itemTwo = new Item("Test item", width, height, depth, weight);
+
+        assertEquals(itemOne.hashCode(), itemTwo.hashCode());
+    }
+
+    @Test
     public void givenNegativeDimensions_shouldThrowException() {
         // given
         int width = -50;
@@ -44,7 +71,7 @@ class ItemTest {
         int weight = 200;
 
         // then should
-        assertThrows(IllegalStateException.class, () -> new Item(width, height, depth, weight));
+        assertThrows(IllegalStateException.class, () -> new Item("Test item", width, height, depth, weight));
     }
 
     @Test
@@ -56,7 +83,7 @@ class ItemTest {
         int weight = -200;
 
         // then should
-        assertThrows(IllegalStateException.class, () -> new Item(width, height, depth, weight));
+        assertThrows(IllegalStateException.class, () -> new Item("Test item", width, height, depth, weight));
     }
 
     @Test
@@ -66,7 +93,7 @@ class ItemTest {
         int height = 20;
         int depth = 30;
         int weight = 200;
-        Item item = new Item(width, height, depth, weight);
+        Item item = new Item("Test item", width, height, depth, weight);
 
         // then
         Quantity<Length> widthAsMillimeter = item.getWidthAsUnit(ItemUnits.Length.MILLIMETER);
@@ -92,7 +119,7 @@ class ItemTest {
         int height = 2000;
         int depth = 30;
         int weight = 200;
-        Item item = new Item(width, height, depth, weight);
+        Item item = new Item("Test item", width, height, depth, weight);
 
         // then
         Quantity<Length> heightAsMillimeter = item.getHeightAsUnit(ItemUnits.Length.MILLIMETER);
@@ -118,7 +145,7 @@ class ItemTest {
         int height = 20;
         int depth = 3000;
         int weight = 200;
-        Item item = new Item(width, height, depth, weight);
+        Item item = new Item("Test item", width, height, depth, weight);
 
         // then
         Quantity<Length> depthAsMillimeter = item.getDepthAsUnit(ItemUnits.Length.MILLIMETER);
@@ -144,7 +171,7 @@ class ItemTest {
         int height = 20;
         int depth = 30;
         int weight = 2000;
-        Item item = new Item(width, height, depth, weight);
+        Item item = new Item("Test item", width, height, depth, weight);
 
         // then
         Quantity<Mass> weightAsGram = item.getWeightAsUnit(ItemUnits.Weight.GRAM);
@@ -166,7 +193,7 @@ class ItemTest {
         int weight = 200;
 
         // then
-        Item item = new Item(width, height, depth, weight);
+        Item item = new Item("Test item", width, height, depth, weight);
 
         // should
         assertEquals(item.getVolume().getValue(), 30000);
@@ -182,7 +209,7 @@ class ItemTest {
         int weight = 200;
 
         // then
-        Item item = new Item(width, height, depth, weight);
+        Item item = new Item("Test item", width, height, depth, weight);
 
         // should
         assertEquals(item.getVolume().getValue(), 0);
@@ -198,7 +225,7 @@ class ItemTest {
         double weight = 200;
 
         // then
-        Item item = new Item(ItemUnits.Length.DECIMETER, ItemUnits.Weight.GRAM, width, height, depth, weight);
+        Item item = new Item("Test item", ItemUnits.Length.DECIMETER, ItemUnits.Weight.GRAM, width, height, depth, weight);
 
         // should
         assertEquals(item.getVolume().getValue(), 0.03);

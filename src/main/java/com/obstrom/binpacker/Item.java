@@ -1,5 +1,6 @@
 package com.obstrom.binpacker;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import tech.units.indriya.quantity.Quantities;
@@ -14,15 +15,10 @@ import javax.measure.quantity.Volume;
 import java.util.Objects;
 
 @Getter
+@EqualsAndHashCode
 public class Item {
 
-    // TODO
-    //  - Volume
-    //  - Description
-    //  - Hashable and equals?
-
-    private final static Unit<Length> LENGTH_UNIT = MetricPrefix.MILLI(Units.METRE);
-    private final static Unit<Mass> WEIGHT_UNIT = Units.GRAM;
+    private final String description;
 
     private final Unit<Length> lengthUnit;
     private final Unit<Mass> weightUnit;
@@ -35,6 +31,7 @@ public class Item {
     private Quantity<Volume> volume;
 
     public Item(
+            @NonNull String description,
             @NonNull Unit<Length> lengthUnit,
             @NonNull Unit<Mass> weightUnit,
             double width,
@@ -42,6 +39,7 @@ public class Item {
             double depth,
             double weight
     ) {
+        this.description = description;
         this.lengthUnit = lengthUnit;
         this.weightUnit = weightUnit;
         this.width = Quantities.getQuantity(width, this.lengthUnit);
@@ -53,12 +51,13 @@ public class Item {
     }
 
     public Item(
+            @NonNull String description,
             double width,
             double height,
             double depth,
             double weight
     ) {
-        this(ItemUnits.Length.MILLIMETER, ItemUnits.Weight.GRAM, width, height, depth, weight);
+        this(description, ItemUnits.Length.MILLIMETER, ItemUnits.Weight.GRAM, width, height, depth, weight);
     }
 
     @Override
