@@ -15,8 +15,7 @@ import javax.measure.quantity.Mass;
 public class Item {
 
     // TODO
-    //  - Dimensions
-    //  - Weight
+    //  - Volume
     //  - Description
     //  - Hashable and equals?
 
@@ -47,7 +46,7 @@ public class Item {
         this.height = Quantities.getQuantity(height, this.lengthUnit);
         this.depth = Quantities.getQuantity(depth, this.lengthUnit);
         this.weight = Quantities.getQuantity(weight, this.weightUnit);
-        valid();
+        validate();
     }
 
     public Item(
@@ -70,10 +69,25 @@ public class Item {
         );
     }
 
-    public boolean valid() {
+    public void validate() {
         validateDimensionsNotNegative();
         validateWeightNotNegative();
-        return true;
+    }
+
+    public Quantity<Length> getWidthAsUnit(Unit<Length> unit) {
+        return this.width.to(unit);
+    }
+
+    public Quantity<Length> getHeightAsUnit(Unit<Length> unit) {
+        return this.height.to(unit);
+    }
+
+    public Quantity<Length> getDepthAsUnit(Unit<Length> unit) {
+        return this.depth.to(unit);
+    }
+
+    public Quantity<Mass> getWeightAsUnit(Unit<Mass> unit) {
+        return this.weight.to(unit);
     }
 
     private void validateDimensionsNotNegative() {
