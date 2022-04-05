@@ -63,10 +63,11 @@ public class Item {
     @Override
     public String toString() {
         return String.format(
-                "MetricItem{ width: %s, height: %s, depth: %s, weight: %S }",
+                "MetricItem{ width: %s, height: %s, depth: %s, volume: %s, weight: %S }",
                 this.getWidth(),
                 this.getHeight(),
                 this.getDepth(),
+                this.getVolume(),
                 this.getWeight()
         );
     }

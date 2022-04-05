@@ -63,6 +63,23 @@ class ItemTest {
     }
 
     @Test
+    public void givenValidItem_thenToString_shouldGiveCorrectFormattedString() {
+        // given
+        int width = 50;
+        int height = 20;
+        int depth = 30;
+        int weight = 200;
+
+        Item item = new Item("Test item", width, height, depth, weight);
+
+        // then
+        String expect = item.toString();
+
+        // should
+        assertEquals(expect, "MetricItem{ width: 50 mm, height: 20 mm, depth: 30 mm, volume: 30000 m㎥, weight: 200 G }");
+    }
+
+    @Test
     public void givenNegativeDimensions_shouldThrowException() {
         // given
         int width = -50;
