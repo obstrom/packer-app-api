@@ -1,13 +1,14 @@
-package com.obstrom.binpacker;
+package com.obstrom.binpacker.item;
 
+import com.obstrom.binpacker.util.UnitsUtil;
 import org.junit.jupiter.api.Test;
 import tech.units.indriya.unit.Units;
 
 import javax.measure.MetricPrefix;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ItemUnitsTest {
+class UnitsUtilTest {
 
     @Test
     public void givenValidUnitLength_thenVolumeUnit_shouldBeCorrect() {
@@ -18,10 +19,10 @@ class ItemUnitsTest {
         var lengthMeter = Units.METRE;
 
         // then
-        var cubicMillimeter = ItemUnits.Volume.getVolumeByLengthUnit(lengthMillimeter);
-        var cubicCentimeter = ItemUnits.Volume.getVolumeByLengthUnit(lengthCentimeter);
-        var cubicDecimeter = ItemUnits.Volume.getVolumeByLengthUnit(lengthDecimeter);
-        var cubicMeter = ItemUnits.Volume.getVolumeByLengthUnit(lengthMeter);
+        var cubicMillimeter = UnitsUtil.Volume.getVolumeByLengthUnit(lengthMillimeter);
+        var cubicCentimeter = UnitsUtil.Volume.getVolumeByLengthUnit(lengthCentimeter);
+        var cubicDecimeter = UnitsUtil.Volume.getVolumeByLengthUnit(lengthDecimeter);
+        var cubicMeter = UnitsUtil.Volume.getVolumeByLengthUnit(lengthMeter);
 
         // should
         assertEquals(cubicMillimeter, MetricPrefix.MILLI(Units.CUBIC_METRE));

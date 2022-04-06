@@ -1,11 +1,11 @@
-package com.obstrom.binpacker;
+package com.obstrom.binpacker.util;
 
 import tech.units.indriya.unit.Units;
 
 import javax.measure.MetricPrefix;
 import javax.measure.Unit;
 
-public class ItemUnits {
+public class UnitsUtil {
 
     public static class Length {
         public static final Unit<javax.measure.quantity.Length> MILLIMETER = MetricPrefix.MILLI(Units.METRE);
@@ -27,13 +27,13 @@ public class ItemUnits {
 
         public static Unit<javax.measure.quantity.Volume> getVolumeByLengthUnit(Unit<javax.measure.quantity.Length> lengthUnit) {
             switch (lengthUnit.toString()) {
-                case ("mm") -> {
+                case "mm" -> {
                     return CUBIC_MILLIMETER;
                 }
-                case ("cm") -> {
+                case "cm" -> {
                     return CUBIC_CENTIMETER;
                 }
-                case ("dm") -> {
+                case "dm" -> {
                     return CUBIC_DECIMETER;
                 }
                 default -> {
