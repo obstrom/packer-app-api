@@ -1,12 +1,11 @@
-package com.obstrom.binpacker;
+package com.obstrom.binpacker.item;
 
+import com.obstrom.binpacker.util.UnitsUtil;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import tech.units.indriya.quantity.Quantities;
-import tech.units.indriya.unit.Units;
 
-import javax.measure.MetricPrefix;
 import javax.measure.Quantity;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
@@ -57,7 +56,7 @@ public class Item {
             double depth,
             double weight
     ) {
-        this(description, ItemUnits.Length.MILLIMETER, ItemUnits.Weight.GRAM, width, height, depth, weight);
+        this(description, UnitsUtil.Length.MILLIMETER, UnitsUtil.Weight.GRAM, width, height, depth, weight);
     }
 
     @Override
@@ -97,7 +96,7 @@ public class Item {
         Objects.requireNonNull(this.lengthUnit);
 
         final double volumeValue = this.getWidth().getValue().doubleValue() * this.getDepth().getValue().doubleValue() * this.getHeight().getValue().doubleValue();
-        final Unit<Volume> volumeUnit = ItemUnits.Volume.getVolumeByLengthUnit(this.lengthUnit);
+        final Unit<Volume> volumeUnit = UnitsUtil.Volume.getVolumeByLengthUnit(this.lengthUnit);
 
         this.volume = Quantities.getQuantity(volumeValue, volumeUnit);
         this.volumeUnit = volumeUnit;

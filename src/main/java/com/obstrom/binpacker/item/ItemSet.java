@@ -1,4 +1,4 @@
-package com.obstrom.binpacker;
+package com.obstrom.binpacker.item;
 
 public record ItemSet(int quantity, Item item) {
 }

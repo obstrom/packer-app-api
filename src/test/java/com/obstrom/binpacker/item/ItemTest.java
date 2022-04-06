@@ -1,14 +1,14 @@
-package com.obstrom.binpacker;
+package com.obstrom.binpacker.item;
 
+import com.obstrom.binpacker.util.UnitsUtil;
 import org.junit.jupiter.api.Test;
-import tech.units.indriya.unit.Units;
 
-import javax.measure.MetricPrefix;
 import javax.measure.Quantity;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Mass;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ItemTest {
 
@@ -25,13 +25,13 @@ class ItemTest {
 
         // should
         assertEquals(item.getWidth().getValue(), 50);
-        assertEquals(item.getWidth().getUnit(), ItemUnits.Length.MILLIMETER);
+        assertEquals(item.getWidth().getUnit(), UnitsUtil.Length.MILLIMETER);
         assertEquals(item.getHeight().getValue(), 20);
-        assertEquals(item.getHeight().getUnit(), ItemUnits.Length.MILLIMETER);
+        assertEquals(item.getHeight().getUnit(), UnitsUtil.Length.MILLIMETER);
         assertEquals(item.getDepth().getValue(), 30);
-        assertEquals(item.getDepth().getUnit(), ItemUnits.Length.MILLIMETER);
+        assertEquals(item.getDepth().getUnit(), UnitsUtil.Length.MILLIMETER);
         assertEquals(item.getWeight().getValue(), 200);
-        assertEquals(item.getWeight().getUnit(), ItemUnits.Weight.GRAM);
+        assertEquals(item.getWeight().getUnit(), UnitsUtil.Weight.GRAM);
     }
 
     @Test
@@ -113,20 +113,20 @@ class ItemTest {
         Item item = new Item("Test item", width, height, depth, weight);
 
         // then
-        Quantity<Length> widthAsMillimeter = item.getWidthAsUnit(ItemUnits.Length.MILLIMETER);
-        Quantity<Length> widthAsCentimeter = item.getWidthAsUnit(ItemUnits.Length.CENTIMETER);
-        Quantity<Length> widthAsDecimeter = item.getWidthAsUnit(ItemUnits.Length.DECIMETER);
-        Quantity<Length> widthAsMeter = item.getWidthAsUnit(ItemUnits.Length.METER);
+        Quantity<Length> widthAsMillimeter = item.getWidthAsUnit(UnitsUtil.Length.MILLIMETER);
+        Quantity<Length> widthAsCentimeter = item.getWidthAsUnit(UnitsUtil.Length.CENTIMETER);
+        Quantity<Length> widthAsDecimeter = item.getWidthAsUnit(UnitsUtil.Length.DECIMETER);
+        Quantity<Length> widthAsMeter = item.getWidthAsUnit(UnitsUtil.Length.METER);
 
         // should
         assertEquals(widthAsMillimeter.getValue(), 5000);
-        assertEquals(widthAsMillimeter.getUnit(), ItemUnits.Length.MILLIMETER);
+        assertEquals(widthAsMillimeter.getUnit(), UnitsUtil.Length.MILLIMETER);
         assertEquals(widthAsCentimeter.getValue(), 500);
-        assertEquals(widthAsCentimeter.getUnit(), ItemUnits.Length.CENTIMETER);
+        assertEquals(widthAsCentimeter.getUnit(), UnitsUtil.Length.CENTIMETER);
         assertEquals(widthAsDecimeter.getValue(), 50);
-        assertEquals(widthAsDecimeter.getUnit(), ItemUnits.Length.DECIMETER);
+        assertEquals(widthAsDecimeter.getUnit(), UnitsUtil.Length.DECIMETER);
         assertEquals(widthAsMeter.getValue(), 5);
-        assertEquals(widthAsMeter.getUnit(), ItemUnits.Length.METER);
+        assertEquals(widthAsMeter.getUnit(), UnitsUtil.Length.METER);
     }
 
     @Test
@@ -139,20 +139,20 @@ class ItemTest {
         Item item = new Item("Test item", width, height, depth, weight);
 
         // then
-        Quantity<Length> heightAsMillimeter = item.getHeightAsUnit(ItemUnits.Length.MILLIMETER);
-        Quantity<Length> heightAsCentimeter = item.getHeightAsUnit(ItemUnits.Length.CENTIMETER);
-        Quantity<Length> heightAsDecimeter = item.getHeightAsUnit(ItemUnits.Length.DECIMETER);
-        Quantity<Length> heightAsMeter = item.getHeightAsUnit(ItemUnits.Length.METER);
+        Quantity<Length> heightAsMillimeter = item.getHeightAsUnit(UnitsUtil.Length.MILLIMETER);
+        Quantity<Length> heightAsCentimeter = item.getHeightAsUnit(UnitsUtil.Length.CENTIMETER);
+        Quantity<Length> heightAsDecimeter = item.getHeightAsUnit(UnitsUtil.Length.DECIMETER);
+        Quantity<Length> heightAsMeter = item.getHeightAsUnit(UnitsUtil.Length.METER);
 
         // should
         assertEquals(heightAsMillimeter.getValue(), 2000);
-        assertEquals(heightAsMillimeter.getUnit(), ItemUnits.Length.MILLIMETER);
+        assertEquals(heightAsMillimeter.getUnit(), UnitsUtil.Length.MILLIMETER);
         assertEquals(heightAsCentimeter.getValue(), 200);
-        assertEquals(heightAsCentimeter.getUnit(), ItemUnits.Length.CENTIMETER);
+        assertEquals(heightAsCentimeter.getUnit(), UnitsUtil.Length.CENTIMETER);
         assertEquals(heightAsDecimeter.getValue(), 20);
-        assertEquals(heightAsDecimeter.getUnit(), ItemUnits.Length.DECIMETER);
+        assertEquals(heightAsDecimeter.getUnit(), UnitsUtil.Length.DECIMETER);
         assertEquals(heightAsMeter.getValue(), 2);
-        assertEquals(heightAsMeter.getUnit(), ItemUnits.Length.METER);
+        assertEquals(heightAsMeter.getUnit(), UnitsUtil.Length.METER);
     }
 
     @Test
@@ -165,20 +165,20 @@ class ItemTest {
         Item item = new Item("Test item", width, height, depth, weight);
 
         // then
-        Quantity<Length> depthAsMillimeter = item.getDepthAsUnit(ItemUnits.Length.MILLIMETER);
-        Quantity<Length> depthAsCentimeter = item.getDepthAsUnit(ItemUnits.Length.CENTIMETER);
-        Quantity<Length> depthAsDecimeter = item.getDepthAsUnit(ItemUnits.Length.DECIMETER);
-        Quantity<Length> depthAsMeter = item.getDepthAsUnit(ItemUnits.Length.METER);
+        Quantity<Length> depthAsMillimeter = item.getDepthAsUnit(UnitsUtil.Length.MILLIMETER);
+        Quantity<Length> depthAsCentimeter = item.getDepthAsUnit(UnitsUtil.Length.CENTIMETER);
+        Quantity<Length> depthAsDecimeter = item.getDepthAsUnit(UnitsUtil.Length.DECIMETER);
+        Quantity<Length> depthAsMeter = item.getDepthAsUnit(UnitsUtil.Length.METER);
 
         // should
         assertEquals(depthAsMillimeter.getValue(), 3000);
-        assertEquals(depthAsMillimeter.getUnit(), ItemUnits.Length.MILLIMETER);
+        assertEquals(depthAsMillimeter.getUnit(), UnitsUtil.Length.MILLIMETER);
         assertEquals(depthAsCentimeter.getValue(), 300);
-        assertEquals(depthAsCentimeter.getUnit(), ItemUnits.Length.CENTIMETER);
+        assertEquals(depthAsCentimeter.getUnit(), UnitsUtil.Length.CENTIMETER);
         assertEquals(depthAsDecimeter.getValue(), 30);
-        assertEquals(depthAsDecimeter.getUnit(), ItemUnits.Length.DECIMETER);
+        assertEquals(depthAsDecimeter.getUnit(), UnitsUtil.Length.DECIMETER);
         assertEquals(depthAsMeter.getValue(), 3);
-        assertEquals(depthAsMeter.getUnit(), ItemUnits.Length.METER);
+        assertEquals(depthAsMeter.getUnit(), UnitsUtil.Length.METER);
     }
 
     @Test
@@ -191,14 +191,14 @@ class ItemTest {
         Item item = new Item("Test item", width, height, depth, weight);
 
         // then
-        Quantity<Mass> weightAsGram = item.getWeightAsUnit(ItemUnits.Weight.GRAM);
-        Quantity<Mass> weightAsKilogram = item.getWeightAsUnit(ItemUnits.Weight.KILOGRAM);
+        Quantity<Mass> weightAsGram = item.getWeightAsUnit(UnitsUtil.Weight.GRAM);
+        Quantity<Mass> weightAsKilogram = item.getWeightAsUnit(UnitsUtil.Weight.KILOGRAM);
 
         // should
         assertEquals(weightAsGram.getValue(), 2000);
-        assertEquals(weightAsGram.getUnit(), ItemUnits.Weight.GRAM);
+        assertEquals(weightAsGram.getUnit(), UnitsUtil.Weight.GRAM);
         assertEquals(weightAsKilogram.getValue(), 2);
-        assertEquals(weightAsKilogram.getUnit(), ItemUnits.Weight.KILOGRAM);
+        assertEquals(weightAsKilogram.getUnit(), UnitsUtil.Weight.KILOGRAM);
     }
 
     @Test
@@ -214,7 +214,7 @@ class ItemTest {
 
         // should
         assertEquals(item.getVolume().getValue(), 30000);
-        assertEquals(item.getVolume().getUnit(), ItemUnits.Volume.CUBIC_MILLIMETER);
+        assertEquals(item.getVolume().getUnit(), UnitsUtil.Volume.CUBIC_MILLIMETER);
     }
 
     @Test
@@ -230,7 +230,7 @@ class ItemTest {
 
         // should
         assertEquals(item.getVolume().getValue(), 0);
-        assertEquals(item.getVolume().getUnit(), ItemUnits.Volume.CUBIC_MILLIMETER);
+        assertEquals(item.getVolume().getUnit(), UnitsUtil.Volume.CUBIC_MILLIMETER);
     }
 
     @Test
@@ -242,11 +242,11 @@ class ItemTest {
         double weight = 200;
 
         // then
-        Item item = new Item("Test item", ItemUnits.Length.DECIMETER, ItemUnits.Weight.GRAM, width, height, depth, weight);
+        Item item = new Item("Test item", UnitsUtil.Length.DECIMETER, UnitsUtil.Weight.GRAM, width, height, depth, weight);
 
         // should
         assertEquals(item.getVolume().getValue(), 0.03);
-        assertEquals(item.getVolume().getUnit(), ItemUnits.Volume.CUBIC_DECIMETER);
+        assertEquals(item.getVolume().getUnit(), UnitsUtil.Volume.CUBIC_DECIMETER);
     }
 
 }
