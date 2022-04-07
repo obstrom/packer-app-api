@@ -1,6 +1,6 @@
-package com.obstrom.binpacker.item;
+package com.obstrom.binpacker.old.item;
 
-import com.obstrom.binpacker.util.UnitsUtil;
+import com.obstrom.binpacker.old.util.UnitsUtil;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -11,8 +11,12 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Volume;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
+@Deprecated
 @Getter
 @EqualsAndHashCode
 public class Item {
@@ -28,6 +32,8 @@ public class Item {
     private final Quantity<Length> depth;
     private final Quantity<Mass> weight;
     private Quantity<Volume> volume;
+
+    private final List<Quantity<Length>> dimensionsBySize = new ArrayList<>();
 
     public Item(
             @NonNull String description,
@@ -47,6 +53,7 @@ public class Item {
         this.weight = Quantities.getQuantity(weight, this.weightUnit);
         validate();
         calculateVolume();
+        fillAndSortDimensionsBySize();
     }
 
     public Item(
@@ -110,6 +117,11 @@ public class Item {
 
     private void validateWeightNotNegative() {
         if (this.weight.getValue().intValue() < 0) throw new IllegalStateException("Item weight may not be negative");
+    }
+
+    private void fillAndSortDimensionsBySize() {
+        dimensionsBySize.addAll(List.of(width, height, depth));
+        dimensionsBySize.sort(Comparator.comparingDouble(length -> length.getValue().intValue()));
     }
 
 }

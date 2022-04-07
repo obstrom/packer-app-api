@@ -1,8 +1,9 @@
-package com.obstrom.binpacker;
+package com.obstrom.binpacker.old;
 
-import com.obstrom.binpacker.exception.JobException;
-import com.obstrom.binpacker.item.Item;
-import com.obstrom.binpacker.item.ItemSet;
+import com.obstrom.binpacker.old.exception.JobException;
+import com.obstrom.binpacker.old.item.Bin;
+import com.obstrom.binpacker.old.item.Item;
+import com.obstrom.binpacker.old.item.ItemSet;
 import lombok.Getter;
 
 import java.util.LinkedList;
@@ -17,7 +18,7 @@ public class Job {
 
     private final UUID id;
     private final List<ItemSet> items;
-    private final List<Item> bins;
+    private final List<Bin> bins;
     private Object result;
 
     public Job() {
@@ -30,7 +31,7 @@ public class Job {
         this.items.add(new ItemSet(quantity, item));
     }
 
-    public void addBin(Item bin) {
+    public void addBin(Bin bin) {
         this.bins.add(bin);
     }
 

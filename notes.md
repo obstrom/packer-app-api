@@ -27,9 +27,21 @@ Should also take different weighted parameters into consideration. For instance;
 Listing some possible heuristics to optimize the process.
 
 ### Optimize for a single bin approach
+
 1. Filter out any bins whose volumes fall short of the total volume of the task.
-2. Filter out any bins whose dimensions won't hold the dimensions of any given item in the task (e.g. a long item for a cube box).
+2. Filter out any bins whose dimensions won't hold the dimensions of any given item in the task (e.g. a long item for a
+   cube box).
 3. Sorts the items in descending order of size, attempting to place the bigger items first.
 
 ### Post sorting adjustments
+
 1. Favor solutions that place heavier items to the bottom when stacking if deciding between solutions.
+
+### 6/4 2022 Notes
+
+Use the LAFF algorithm from the paper "An Efficient Algorithm for 3D Rectangular Box Packing". To work around the
+algorithm finding the optimal stacking instead of the optimal container try the following:
+
+* Derive the width and depth parameters for the first steps of the algorithm from the Bin instead of the longest times
+* You could get the optimal width and depth first to remove any Bin with a too small of a footprint
+* And if the packing blows the height, just skip that Bin or the solution

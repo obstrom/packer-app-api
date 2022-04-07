@@ -1,6 +1,7 @@
 package com.obstrom.binpacker.item;
 
-import com.obstrom.binpacker.util.UnitsUtil;
+import com.obstrom.binpacker.old.item.Item;
+import com.obstrom.binpacker.old.util.UnitsUtil;
 import org.junit.jupiter.api.Test;
 
 import javax.measure.Quantity;
