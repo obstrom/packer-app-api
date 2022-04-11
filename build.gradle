@@ -26,6 +26,9 @@ dependencies {
     implementation 'si.uom:si-units:2.1'
     implementation 'si.uom:si-quantity:2.1'
 
+    // 3D bin packing
+    implementation 'com.github.skjolber.3d-bin-container-packing:core:2.0.8'
+
 }
 
 test {
