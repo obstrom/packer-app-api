@@ -1,9 +1,9 @@
-package com.obstrom.binpacker.old;
+package com.obstrom.binpacker;
 
-import com.obstrom.binpacker.old.exception.JobException;
-import com.obstrom.binpacker.old.item.Bin;
-import com.obstrom.binpacker.old.item.Item;
-import com.obstrom.binpacker.old.item.ItemSet;
+import com.obstrom.binpacker.exception.JobException;
+import com.obstrom.binpacker.item.Bin;
+import com.obstrom.binpacker.item.Item;
+import com.obstrom.binpacker.item.ItemSet;
 import lombok.Getter;
 
 import java.util.LinkedList;

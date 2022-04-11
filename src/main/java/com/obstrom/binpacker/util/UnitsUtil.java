@@ -1,4 +1,4 @@
-package com.obstrom.binpacker.old.util;
+package com.obstrom.binpacker.util;
 
 import tech.units.indriya.unit.Units;
 

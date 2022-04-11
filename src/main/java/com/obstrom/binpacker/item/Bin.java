@@ -1,4 +1,4 @@
-package com.obstrom.binpacker.old.item;
+package com.obstrom.binpacker.item;
 
 import lombok.NonNull;
 
