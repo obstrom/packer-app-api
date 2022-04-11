@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-@Deprecated
 @Getter
 @EqualsAndHashCode
 public class Item {
