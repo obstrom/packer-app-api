@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '2.6.6'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 group 'com.obstrom'
-version '0.1-ALPHA-SNAPSHOT'
+version '0.2-ALPHA-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -29,10 +31,7 @@ dependencies {
     // 3D bin packing
     implementation 'com.github.skjolber.3d-bin-container-packing:core:2.0.8'
 
-}
+    // Spring boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-test {
-    useJUnitPlatform()
-
-    include 'com/obstrom/binpacker/**'
 }
