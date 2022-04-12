@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jvm-test-suite'
     id 'org.springframework.boot' version '2.6.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
@@ -34,4 +35,23 @@ dependencies {
     // Spring boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+}
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            sources {
+                java {
+                    srcDirs = ['src/test/java']
+                }
+            }
+
+            dependencies {
+                implementation 'org.assertj:assertj-core:3.22.0'
+                implementation 'org.mockito:mockito-core:4.4.0'
+            }
+        }
+    }
 }
