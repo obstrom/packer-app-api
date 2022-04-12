@@ -1,4 +1,4 @@
-package com.obstrom.binpacker;
+package com.obstrom.packerservice;
 
 import com.github.skjolber.packing.api.Box;
 import com.github.skjolber.packing.api.Container;

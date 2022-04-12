@@ -1,4 +1,4 @@
-package com.obstrom.binpacker;
+package com.obstrom.packerservice;
 
 import com.github.skjolber.packing.api.Container;
 import com.github.skjolber.packing.api.StackableItem;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 @RequiredArgsConstructor
 public class Packager {

@@ -1,4 +1,4 @@
-package com.obstrom.binpacker.exception;
+package com.obstrom.packerservice.exception;
 
 public class JobException extends RuntimeException {
 

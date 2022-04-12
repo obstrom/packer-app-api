@@ -1,6 +1,6 @@
-package com.obstrom.binpacker.item;
+package com.obstrom.packerservice.item;
 
-import com.obstrom.binpacker.util.UnitsUtil;
+import com.obstrom.packerservice.util.UnitsUtil;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
