@@ -1,6 +1,6 @@
 package com.obstrom.packerservice.item;
 
-import com.obstrom.packerservice.util.UnitsUtil;
+import com.obstrom.packerservice.StandardUnitsUtil;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -62,7 +62,13 @@ public class Item {
             double depth,
             double weight
     ) {
-        this(description, UnitsUtil.Length.MILLIMETER, UnitsUtil.Weight.GRAM, width, height, depth, weight);
+        this(description,
+                StandardUnitsUtil.Length.METRIC_MILLIMETER.getUnit(),
+                StandardUnitsUtil.Weight.METRIC_GRAM.getUnit(),
+                width,
+                height,
+                depth,
+                weight);
     }
 
     @Override
@@ -102,7 +108,7 @@ public class Item {
         Objects.requireNonNull(this.lengthUnit);
 
         final double volumeValue = this.getWidth().getValue().doubleValue() * this.getDepth().getValue().doubleValue() * this.getHeight().getValue().doubleValue();
-        final Unit<Volume> volumeUnit = UnitsUtil.Volume.getVolumeByLengthUnit(this.lengthUnit);
+        final Unit<Volume> volumeUnit = StandardUnitsUtil.Volume.getVolumeByLengthUnit(this.lengthUnit);
 
         this.volume = Quantities.getQuantity(volumeValue, volumeUnit);
         this.volumeUnit = volumeUnit;

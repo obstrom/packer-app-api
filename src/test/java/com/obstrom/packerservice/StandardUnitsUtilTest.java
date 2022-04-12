@@ -1,6 +1,5 @@
-package com.obstrom.packerservice.item;
+package com.obstrom.packerservice;
 
-import com.obstrom.packerservice.util.UnitsUtil;
 import org.junit.jupiter.api.Test;
 import tech.units.indriya.unit.Units;
 
@@ -8,7 +7,7 @@ import javax.measure.MetricPrefix;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class UnitsUtilTest {
+class StandardUnitsUtilTest {
 
     @Test
     public void givenValidUnitLength_thenVolumeUnit_shouldBeCorrect() {
@@ -19,10 +18,10 @@ class UnitsUtilTest {
         var lengthMeter = Units.METRE;
 
         // then
-        var cubicMillimeter = UnitsUtil.Volume.getVolumeByLengthUnit(lengthMillimeter);
-        var cubicCentimeter = UnitsUtil.Volume.getVolumeByLengthUnit(lengthCentimeter);
-        var cubicDecimeter = UnitsUtil.Volume.getVolumeByLengthUnit(lengthDecimeter);
-        var cubicMeter = UnitsUtil.Volume.getVolumeByLengthUnit(lengthMeter);
+        var cubicMillimeter = StandardUnitsUtil.Volume.getVolumeByLengthUnit(lengthMillimeter);
+        var cubicCentimeter = StandardUnitsUtil.Volume.getVolumeByLengthUnit(lengthCentimeter);
+        var cubicDecimeter = StandardUnitsUtil.Volume.getVolumeByLengthUnit(lengthDecimeter);
+        var cubicMeter = StandardUnitsUtil.Volume.getVolumeByLengthUnit(lengthMeter);
 
         // should
         assertEquals(cubicMillimeter, MetricPrefix.MILLI(Units.CUBIC_METRE));
