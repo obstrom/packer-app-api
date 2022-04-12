@@ -1,4 +1,4 @@
-package com.obstrom.packerservice;
+package com.obstrom.packerservice.packer;
 
 import com.github.skjolber.packing.api.Container;
 import com.github.skjolber.packing.api.StackableItem;

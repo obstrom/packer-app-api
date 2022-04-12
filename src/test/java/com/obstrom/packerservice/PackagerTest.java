@@ -4,6 +4,7 @@ import com.github.skjolber.packing.api.Box;
 import com.github.skjolber.packing.api.Container;
 import com.github.skjolber.packing.api.StackableItem;
 import com.github.skjolber.packing.packer.laff.LargestAreaFitFirstPackager;
+import com.obstrom.packerservice.packer.Packager;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
