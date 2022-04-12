@@ -1,4 +1,4 @@
-package com.obstrom.packerservice.item;
+package com.obstrom.packerservice.packer;
 
 import com.obstrom.packerservice.StandardUnitsUtil;
 import lombok.EqualsAndHashCode;
