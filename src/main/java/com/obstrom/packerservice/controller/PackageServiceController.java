@@ -1,6 +1,7 @@
 package com.obstrom.packerservice.controller;
 
 import com.obstrom.packerservice.dto.PackingJobRequestDto;
+import com.obstrom.packerservice.dto.PackingJobResponseDto;
 import com.obstrom.packerservice.service.PackingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,10 @@ public class PackageServiceController {
     private final PackingService packingService;
 
     @PostMapping("pack")
-    private Mono<Object> pack(@RequestBody @Valid PackingJobRequestDto requestDto) {
-        packingService.handlePackingJobRequest(requestDto);
+    private PackingJobResponseDto pack(@RequestBody @Valid PackingJobRequestDto requestDto) {
+        PackingJobResponseDto responseDto = packingService.handlePackingJobRequest(requestDto);
 
-        return null;
+        return responseDto;
     }
 
 }

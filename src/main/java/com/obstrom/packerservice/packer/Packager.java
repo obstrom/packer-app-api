@@ -45,6 +45,10 @@ public class Packager {
         products.add(stackableItem);
     }
 
+    public void addProducts(List<StackableItem> stackableItems) {
+        products.addAll(stackableItems);
+    }
+
     public List<Container> pack() {
         if (!isInitialized) throw new PackagerException("Packager is not initialized. Initialize the packer first.");
         if (isFinished) return result;

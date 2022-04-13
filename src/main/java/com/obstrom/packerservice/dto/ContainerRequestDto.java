@@ -8,11 +8,10 @@ import javax.validation.constraints.Min;
 
 @Getter
 @Setter
-public class ItemRequestDto extends BaseItemRequestDto {
+public class ContainerRequestDto extends BaseItemRequestDto {
 
-    boolean allowRotation;
     @Min(0)
-    @Max(100)
-    private int quantity;
+    @Max(Integer.MAX_VALUE)
+    private int maxLoad = Integer.MAX_VALUE;
 
 }
