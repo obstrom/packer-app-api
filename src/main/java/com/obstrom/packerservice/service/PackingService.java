@@ -74,9 +74,9 @@ public class PackingService {
                 .map(container -> new ItemResponseDto(
                         container.getId(),
                         container.getDescription(),
-                        container.getWeight(),
                         container.getVolume(),
                         calculateUsedVolumePercentage(container.getVolume(), container.getStack().getFreeVolumeLoad()),
+                        container.getWeight(),
                         stackToResponseDto(container.getStack()))
                 )
                 .toList();
@@ -85,15 +85,15 @@ public class PackingService {
     }
 
     private double calculateUsedVolumePercentage(Long volumeCapacity, Long availableFreeVolume) {
-        return 1.0d - (availableFreeVolume.doubleValue() / volumeCapacity.doubleValue());
+        return (1.0d - (availableFreeVolume.doubleValue() / volumeCapacity.doubleValue())) * 100.0d;
     }
 
     private StackResponseDto stackToResponseDto(Stack stack) {
         return new StackResponseDto(
-                stack.getFreeVolumeLoad(),
-                stack.getFreeWeightLoad(),
                 stack.getDz(),
-                stack.getSize()
+                stack.getSize(),
+                stack.getFreeVolumeLoad(),
+                stack.getFreeWeightLoad()
         );
     }
 
