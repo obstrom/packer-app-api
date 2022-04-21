@@ -1,2 +1,12 @@
 server:
   port: 8080
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
+    reactor:
+      netty:
+        http:
+          client:
+            HttpClient: DEBUG

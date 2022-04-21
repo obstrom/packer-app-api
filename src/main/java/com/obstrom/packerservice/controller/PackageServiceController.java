@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
@@ -22,7 +21,7 @@ public class PackageServiceController {
     private final PackingService packingService;
 
     @PostMapping("pack")
-    private PackingJobResponseDto pack(@RequestBody @Valid PackingJobRequestDto requestDto) {
+    private PackingJobResponseDto pack(@Valid @RequestBody PackingJobRequestDto requestDto) {
         PackingJobResponseDto responseDto = packingService.handlePackingJobRequest(requestDto);
 
         return responseDto;
