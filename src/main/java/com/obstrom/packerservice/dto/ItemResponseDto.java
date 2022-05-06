@@ -4,7 +4,7 @@ public record ItemResponseDto(
         String id,
         String description,
         long totalVolume,
-        double volumeUsedPercent,
+        double volumeUsedPercentage,
         int totalWeight,
         StackResponseDto content
 ) {

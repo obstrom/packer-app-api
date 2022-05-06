@@ -18,6 +18,8 @@ import java.util.List;
 
 public class PackingJobRequestDtoDeserializer extends JsonDeserializer<PackingJobRequestDto> {
 
+    private final static ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public PackingJobRequestDto deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
         JsonNode node = p.getCodec().readTree(p);
@@ -28,10 +30,6 @@ public class PackingJobRequestDtoDeserializer extends JsonDeserializer<PackingJo
         StandardUnitsUtil.Weight weight =
                 parseUnit(StandardUnitsUtil.Weight.class, node, "weightUnitType");
 
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        // TODO - Boxes list
         List<ContainerRequestDto> boxes;
         JsonNode boxesNode = node.get("boxes");
         if (boxesNode == null) {
@@ -43,7 +41,6 @@ public class PackingJobRequestDtoDeserializer extends JsonDeserializer<PackingJo
             }
         }
 
-        // TODO - Products list
         List<ItemRequestDto> products;
         JsonNode productNode = node.get("products");
         if (productNode == null) {
