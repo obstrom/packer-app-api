@@ -1,6 +1,5 @@
 package com.obstrom.packerservice.dto;
 
-import com.obstrom.packerservice.StandardUnitsUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,6 @@ public class BaseItemRequestDto {
     @NotBlank
     private String id;
 
-    @NotBlank
     private String description;
 
     @Min(0)
