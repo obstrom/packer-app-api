@@ -11,8 +11,9 @@ import javax.validation.constraints.Min;
 public class ItemRequestDto extends BaseItemRequestDto {
 
     boolean allowRotation;
+
     @Min(0)
-    @Max(100)
+    @Max(999)
     private int quantity;
 
 }

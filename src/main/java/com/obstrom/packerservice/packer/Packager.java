@@ -4,17 +4,21 @@ import com.github.skjolber.packing.api.Container;
 import com.github.skjolber.packing.api.StackableItem;
 import com.github.skjolber.packing.packer.PackagerException;
 import com.github.skjolber.packing.packer.laff.LargestAreaFitFirstPackager;
+import com.obstrom.packerservice.exception.JobTimeoutException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 public class Packager {
 
-    private final long TIMEOUT_MILLISECONDS = 1000L;
-
+    private final long timeoutMilliseconds;
     private final List<Container> containers;
+
     private final List<StackableItem> products = new ArrayList<>();
     private LargestAreaFitFirstPackager packager = null;
 
@@ -53,15 +57,24 @@ public class Packager {
         if (!isInitialized) throw new PackagerException("Packager is not initialized. Initialize the packer first.");
         if (isFinished) return result;
 
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
         List<Container> packagerResult = packager.packList(products, 5, getDeadline());
         result = (packagerResult == null) ? List.of() : packagerResult; // Switches null value for empty list
+
+        stopWatch.stop();
+        log.info("Packing job finished in {} ms", stopWatch.getLastTaskTimeMillis());
+
+        if (stopWatch.getLastTaskTimeMillis() > timeoutMilliseconds)
+            throw new JobTimeoutException("Job reached timeout limit of %s milliseconds.".formatted(timeoutMilliseconds));
 
         isFinished = true;
         return result;
     }
 
     private Long getDeadline() {
-        return System.currentTimeMillis() + TIMEOUT_MILLISECONDS;
+        return System.currentTimeMillis() + timeoutMilliseconds;
     }
 
 }

@@ -92,7 +92,7 @@ class PackagerTest {
         );
 
         // when
-        Packager packager = new Packager(containers);
+        Packager packager = new Packager(1000, containers);
         packager.init();
         packager.addProduct(stackableItem);
         List<Container> result = packager.pack();

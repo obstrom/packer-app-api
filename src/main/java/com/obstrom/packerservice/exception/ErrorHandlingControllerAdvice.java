@@ -34,4 +34,11 @@ public class ErrorHandlingControllerAdvice {
         return new HttpResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
+    @ExceptionHandler(JobTimeoutException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public HttpResponse handleJobTimeoutException(JobTimeoutException e) {
+        return new HttpResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
 }
