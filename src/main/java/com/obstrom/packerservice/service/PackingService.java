@@ -108,18 +108,18 @@ public class PackingService {
 
     private PackingJobVolumeDto calculateJobVolumeDto(List<Container> result) {
         AtomicLong totalVolume = new AtomicLong();
-        AtomicLong totalVolumeLeft = new AtomicLong();
+        AtomicLong totalVolumeRemaining = new AtomicLong();
 
         result.forEach(container -> {
             totalVolume.addAndGet(container.getVolume());
-            totalVolumeLeft.addAndGet(container.getStack().getFreeVolumeLoad());
+            totalVolumeRemaining.addAndGet(container.getStack().getFreeVolumeLoad());
         });
 
-        Long totalVolumeUsed = totalVolume.get() - totalVolumeLeft.get();
+        Long totalVolumeUsed = totalVolume.get() - totalVolumeRemaining.get();
 
         return new PackingJobVolumeDto(
                 totalVolume.get(),
-                totalVolumeLeft.get(),
+                totalVolumeRemaining.get(),
                 totalVolumeUsed
         );
     }
