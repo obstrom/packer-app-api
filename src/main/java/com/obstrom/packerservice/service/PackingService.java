@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -94,14 +95,36 @@ public class PackingService {
                 )
                 .toList();
 
+        PackingJobVolumeDto packingJobVolumeDto = calculateJobVolumeDto(result);
+
         PackagingResultVisualizer visualizeData = generateVisualizerData(result);
 
-        return new PackingJobResponseDto(resultContainers, visualizeData);
+        return new PackingJobResponseDto(
+                packingJobVolumeDto,
+                resultContainers,
+                visualizeData
+        );
+    }
+
+    private PackingJobVolumeDto calculateJobVolumeDto(List<Container> result) {
+        AtomicLong totalVolume = new AtomicLong();
+        AtomicLong totalVolumeLeft = new AtomicLong();
+
+        result.forEach(container -> {
+            totalVolume.addAndGet(container.getVolume());
+            totalVolumeLeft.addAndGet(container.getStack().getFreeVolumeLoad());
+        });
+
+        Long totalVolumeUsed = totalVolume.get() - totalVolumeLeft.get();
+
+        return new PackingJobVolumeDto(
+                totalVolume.get(),
+                totalVolumeLeft.get(),
+                totalVolumeUsed
+        );
     }
 
     private double calculateUsedVolumePercentage(Long volumeCapacity, Long availableFreeVolume) {
-        log.info("volumeCapacity = {}", volumeCapacity);
-        log.info("availableFreeVolume = {}", availableFreeVolume);
         return 1.0d - (availableFreeVolume.doubleValue() / volumeCapacity.doubleValue());
     }
 
