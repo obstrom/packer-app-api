@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -32,6 +33,8 @@ public class Packager {
         if (isInitialized)
             throw new PackagerException("Packager is already initialized. Create a new packager instead.");
 
+        containers.sort(Comparator.comparingLong(Container::getVolume));
+
         packager = LargestAreaFitFirstPackager.newBuilder()
                 .withContainers(containers)
                 .build();
@@ -43,6 +46,7 @@ public class Packager {
         if (isInitialized)
             throw new PackagerException("Packager is already initialized with given containers. Create a new packager instead.");
         containers.add(container);
+        containers.sort(Comparator.comparingLong(Container::getVolume));
     }
 
     public void addProduct(StackableItem stackableItem) {
