@@ -8,7 +8,7 @@ public record PackingJobResponseDto(
         PackingJobVolumeDto volume,
         Integer totalWeight,
         Long packingTimeMs,
-        List<ItemResponseDto> boxes,
+        List<ContainerResponseDto> boxes,
         PackagingResultVisualizer visualizeData
 ) {
 }

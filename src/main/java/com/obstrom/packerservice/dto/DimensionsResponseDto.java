@@ -1,6 +1,6 @@
 package com.obstrom.packerservice.dto;
 
-public record StackDimensionsResponseDto(
+public record DimensionsResponseDto(
         Integer width,
         Integer depth,
         Integer height
