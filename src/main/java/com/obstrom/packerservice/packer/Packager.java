@@ -28,6 +28,27 @@ public class Packager {
 
     private List<Container> result = List.of();
 
+    public PackingResults pack() {
+        if (!isInitialized) throw new PackagerException("Packager is not initialized. Initialize the packer first.");
+        if (isFinished) return new PackingResults(0L, result);
+
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        List<Container> packagerResult = packager.packList(products, 5, getDeadline());
+        result = (packagerResult == null) ? List.of() : packagerResult; // Switches null value for empty list
+
+        stopWatch.stop();
+        long taskTimeMillis = stopWatch.getLastTaskTimeMillis() == 0 ? 1 : stopWatch.getLastTaskTimeMillis();
+        log.info("Packing job finished in {} ms", taskTimeMillis);
+
+        if (stopWatch.getLastTaskTimeMillis() > timeoutMilliseconds)
+            throw new JobTimeoutException("Job reached timeout limit of %s milliseconds.".formatted(timeoutMilliseconds));
+
+        isFinished = true;
+        return new PackingResults(taskTimeMillis, result);
+    }
+
     public void init() {
         if (containers.isEmpty()) throw new PackagerException("No containers, can't initialize!");
         if (isInitialized)
@@ -57,24 +78,10 @@ public class Packager {
         products.addAll(stackableItems);
     }
 
-    public List<Container> pack() {
-        if (!isInitialized) throw new PackagerException("Packager is not initialized. Initialize the packer first.");
-        if (isFinished) return result;
-
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
-        List<Container> packagerResult = packager.packList(products, 5, getDeadline());
-        result = (packagerResult == null) ? List.of() : packagerResult; // Switches null value for empty list
-
-        stopWatch.stop();
-        log.info("Packing job finished in {} ms", stopWatch.getLastTaskTimeMillis());
-
-        if (stopWatch.getLastTaskTimeMillis() > timeoutMilliseconds)
-            throw new JobTimeoutException("Job reached timeout limit of %s milliseconds.".formatted(timeoutMilliseconds));
-
-        isFinished = true;
-        return result;
+    public record PackingResults(
+            Long runtimeMilliseconds,
+            List<Container> resultsContainers
+    ) {
     }
 
     private Long getDeadline() {
