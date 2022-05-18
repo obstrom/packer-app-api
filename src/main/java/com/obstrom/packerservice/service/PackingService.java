@@ -1,9 +1,6 @@
 package com.obstrom.packerservice.service;
 
-import com.github.skjolber.packing.api.Box;
-import com.github.skjolber.packing.api.Container;
-import com.github.skjolber.packing.api.Stack;
-import com.github.skjolber.packing.api.StackableItem;
+import com.github.skjolber.packing.api.*;
 import com.github.skjolber.packing.visualizer.api.packaging.PackagingResultVisualizer;
 import com.github.skjolber.packing.visualizer.packaging.DefaultPackagingResultVisualizerFactory;
 import com.obstrom.packerservice.config.PackerProperties;
@@ -14,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -33,7 +31,7 @@ public class PackingService {
         Packager packager = new Packager(this.packerProperties.getTimeoutMilliseconds(), containers);
         packager.init();
         packager.addProducts(products);
-        List<Container> result = packager.pack();
+        Packager.PackingResults result = packager.pack();
 
         return mapResultIntoResponseDto(result);
     }
@@ -84,27 +82,39 @@ public class PackingService {
         }
     }
 
-    private PackingJobResponseDto mapResultIntoResponseDto(List<Container> result) {
-        List<ItemResponseDto> resultContainers = result.stream()
+    private PackingJobResponseDto mapResultIntoResponseDto(Packager.PackingResults result) {
+        List<Container> resultsContainers = result.resultsContainers();
+
+        List<ItemResponseDto> resultContainers = resultsContainers.stream()
                 .map(container -> new ItemResponseDto(
                         container.getId(),
                         container.getDescription(),
                         container.getVolume(),
                         calculateUsedVolumePercentage(container.getVolume(), container.getStack().getFreeVolumeLoad()),
                         container.getWeight(),
-                        stackToResponseDto(container.getStack()))
-                )
+                        stackToResponseDto(container.getStack()),
+                        stackValuesToResponseDto(container.getStackValues())
+                ))
                 .toList();
 
-        PackingJobVolumeDto packingJobVolumeDto = calculateJobVolumeDto(result);
+        PackingJobVolumeDto packingJobVolumeDto = calculateJobVolumeDto(resultsContainers);
+        Integer totalWeight = calculateJobTotalWeight(resultsContainers);
 
-        PackagingResultVisualizer visualizeData = generateVisualizerData(result);
+        PackagingResultVisualizer visualizeData = generateVisualizerData(resultsContainers);
 
         return new PackingJobResponseDto(
                 packingJobVolumeDto,
+                totalWeight,
+                result.runtimeMilliseconds(),
                 resultContainers,
                 visualizeData
         );
+    }
+
+    private Integer calculateJobTotalWeight(List<Container> result) {
+        return result.stream()
+                .map(Container::getWeight)
+                .reduce(0, Integer::sum);
     }
 
     private PackingJobVolumeDto calculateJobVolumeDto(List<Container> result) {
@@ -135,6 +145,17 @@ public class PackingService {
                 stack.getSize(),
                 stack.getFreeVolumeLoad(),
                 stack.getFreeWeightLoad()
+        );
+    }
+
+    private StackDimensionsResponseDto stackValuesToResponseDto(ContainerStackValue[] values) {
+        ContainerStackValue stackValue = Arrays.stream(values).findFirst()
+                .orElseThrow(() -> new IllegalStateException("No container stack values in results!"));
+
+        return new StackDimensionsResponseDto(
+                stackValue.getDx(),
+                stackValue.getDy(),
+                stackValue.getDz()
         );
     }
 

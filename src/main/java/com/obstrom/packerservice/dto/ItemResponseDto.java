@@ -6,6 +6,7 @@ public record ItemResponseDto(
         long totalVolume,
         double volumeUsedPercentage,
         int totalWeight,
-        StackResponseDto content
+        StackResponseDto content,
+        StackDimensionsResponseDto dimensions
 ) {
 }

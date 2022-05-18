@@ -6,6 +6,8 @@ import java.util.List;
 
 public record PackingJobResponseDto(
         PackingJobVolumeDto volume,
+        Integer totalWeight,
+        Long packingTimeMs,
         List<ItemResponseDto> boxes,
         PackagingResultVisualizer visualizeData
 ) {
