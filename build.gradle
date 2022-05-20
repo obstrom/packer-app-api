@@ -30,8 +30,8 @@ dependencies {
     implementation 'si.uom:si-quantity:2.1'
 
     // 3D bin packing
-    implementation 'com.github.skjolber.3d-bin-container-packing:core:2.0.8'
-    implementation 'com.github.skjolber.3d-bin-container-packing:visualizer-packaging:2.0.8'
+    implementation 'com.github.skjolber.3d-bin-container-packing:core:2.0.9'
+    implementation 'com.github.skjolber.3d-bin-container-packing:visualizer-packaging:2.0.9'
 
     // Spring boot
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
