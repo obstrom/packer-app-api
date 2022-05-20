@@ -40,7 +40,6 @@ public class Packager {
 
         stopWatch.stop();
         long taskTimeMillis = stopWatch.getLastTaskTimeMillis() == 0 ? 1 : stopWatch.getLastTaskTimeMillis();
-        log.info("Packing job finished in {} ms", taskTimeMillis);
 
         if (stopWatch.getLastTaskTimeMillis() > timeoutMilliseconds)
             throw new JobTimeoutException("Job reached timeout limit of %s milliseconds.".formatted(timeoutMilliseconds));
