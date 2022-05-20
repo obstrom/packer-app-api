@@ -15,7 +15,7 @@ import java.util.List;
 
 @Slf4j
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${application.http.auth-api-key}")

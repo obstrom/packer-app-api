@@ -1,6 +1,3 @@
-server:
-  port: 8080
-
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
@@ -8,9 +5,3 @@ spring:
 application:
   packer:
     timeoutMilliseconds: 5000
-
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
