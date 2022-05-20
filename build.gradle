@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.obstrom'
-version '0.2-ALPHA-SNAPSHOT'
+version '1.0.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
