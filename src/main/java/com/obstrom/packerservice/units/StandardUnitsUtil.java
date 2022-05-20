@@ -1,4 +1,4 @@
-package com.obstrom.packerservice;
+package com.obstrom.packerservice.units;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

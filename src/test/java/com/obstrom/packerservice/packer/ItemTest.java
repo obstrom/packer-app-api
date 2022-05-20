@@ -1,6 +1,6 @@
 package com.obstrom.packerservice.packer;
 
-import com.obstrom.packerservice.StandardUnitsUtil;
+import com.obstrom.packerservice.units.StandardUnitsUtil;
 import org.junit.jupiter.api.Test;
 
 import javax.measure.Quantity;

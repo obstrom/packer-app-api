@@ -1,7 +1,7 @@
 package com.obstrom.packerservice.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.obstrom.packerservice.StandardUnitsUtil;
+import com.obstrom.packerservice.units.StandardUnitsUtil;
 import com.obstrom.packerservice.deserializer.PackingJobRequestDtoDeserializer;
 
 import javax.validation.Valid;
