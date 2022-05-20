@@ -21,8 +21,8 @@ public class DtoService {
     private final PackingService packingService;
 
     public PackingJobResponseDto handlePackingJobRequest(PackingJobRequestDto packingJobRequestDto) {
-        List<StackableItem> products = mapItemRequestDtoToStackableItems(packingJobRequestDto.getProducts());
-        List<Container> containers = mapItemRequestDtoToContainers(packingJobRequestDto.getBoxes());
+        List<StackableItem> products = mapItemRequestDtoToStackableItems(packingJobRequestDto.products());
+        List<Container> containers = mapItemRequestDtoToContainers(packingJobRequestDto.boxes());
 
         Packager packager = new Packager(this.packerProperties.getTimeoutMilliseconds(), containers);
         packager.init();
@@ -33,7 +33,7 @@ public class DtoService {
     }
 
     private PackingJobResponseDto mapPackingResultsIntoResponseDto(Packager.PackingResults result) {
-        List<Container> resultsContainers = result.getResultsContainers();
+        List<Container> resultsContainers = result.resultsContainers();
 
         List<PackingJobResponseDto.ContainerResponseDto> resultContainers = resultsContainers.stream()
                 .map(container -> new PackingJobResponseDto.ContainerResponseDto(
@@ -46,7 +46,7 @@ public class DtoService {
                         stackValuesToResponseDto(container.getStackValues()),
                         stackPlacementsToResponseDto(container.getStack().getPlacements())
                 ))
-                .collect(Collectors.toList());
+                .toList();
 
         PackingJobResponseDto.PackingJobVolumeDto packingJobVolumeDto = packingService.calculateJobVolumeDto(resultsContainers);
         Integer totalWeight = packingService.calculateJobTotalWeight(resultsContainers);
@@ -56,7 +56,7 @@ public class DtoService {
         return new PackingJobResponseDto(
                 packingJobVolumeDto,
                 totalWeight,
-                result.getRuntimeMilliseconds(),
+                result.runtimeMilliseconds(),
                 resultContainers,
                 visualizeData
         );
@@ -131,8 +131,8 @@ public class DtoService {
 
         return itemMap.values().stream()
                 .map(itemPair -> new PackingJobResponseDto.ItemResponseDto(
-                        itemPair.getItem().getDescription(),
-                        itemPair.getItem().getDimensions(),
+                        itemPair.getItem().description(),
+                        itemPair.getItem().dimensions(),
                         itemPair.getQuantity()
                 ))
                 .collect(Collectors.toList());

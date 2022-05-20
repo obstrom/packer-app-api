@@ -5,8 +5,6 @@ import com.github.skjolber.packing.api.StackableItem;
 import com.github.skjolber.packing.packer.PackagerException;
 import com.github.skjolber.packing.packer.laff.LargestAreaFitFirstPackager;
 import com.obstrom.packerservice.exception.JobTimeoutException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
@@ -79,10 +77,10 @@ public class Packager {
         products.addAll(stackableItems);
     }
 
-    @Data
-    public class PackingResults {
-        private final Long runtimeMilliseconds;
-        private final List<Container> resultsContainers;
+    public record PackingResults(
+            Long runtimeMilliseconds,
+            List<Container> resultsContainers
+    ) {
     }
 
     private Long getDeadline() {

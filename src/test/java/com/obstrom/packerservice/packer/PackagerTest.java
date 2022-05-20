@@ -100,7 +100,7 @@ class PackagerTest {
         packager.init();
         packager.addProduct(stackableItem);
         Packager.PackingResults results = packager.pack();
-        List<Container> resultContainers = results.getResultsContainers();
+        List<Container> resultContainers = results.resultsContainers();
 
         // then
         assertFalse(resultContainers.isEmpty());
