@@ -1,17 +1,17 @@
 package com.obstrom.packerservice.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.obstrom.packerservice.units.StandardUnitsUtil;
-import com.obstrom.packerservice.deserializer.PackingJobRequestDtoDeserializer;
+import lombok.Data;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@JsonDeserialize(using = PackingJobRequestDtoDeserializer.class)
-public record PackingJobRequestDto(
-        @NotNull StandardUnitsUtil.Length lengthUnitType,
-        @NotNull StandardUnitsUtil.Weight weightUnitType,
-        @NotNull @Valid List<ContainerRequestDto> boxes,
-        @NotNull @Valid List<ItemRequestDto> products) {
+@Data
+public class PackingJobRequestDto {
+        private final StandardUnitsUtil.Length lengthUnitType;
+        private final StandardUnitsUtil.Weight weightUnitType;
+        @Valid
+        private final List<ContainerRequestDto> boxes;
+        @Valid
+        private final List<ItemRequestDto> products;
 }
