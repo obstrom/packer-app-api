@@ -41,14 +41,14 @@ In Postman this can be done by selecting `API Key` under the tab `Authorization`
 
 #### Packer request body:
 
-
+*Example:*
 ```
 {
   "lengthUnitType": (enum) "metric_millimeter" | "meteric_centimeter" | "metric_meter",
   "weightUnitType": (enum) "metric_gram" | "metric_kilogram"
   "boxes": [
     {
-      "id": number,
+      "id": string,
       "description": string,
       "width": number (integer),
       "depth": number (integer),
@@ -60,7 +60,7 @@ In Postman this can be done by selecting `API Key` under the tab `Authorization`
    ],
    "products": [
     {
-      "id": number,
+      "id": string,
       "description": string,
       "width": number (integer),
       "depth": number (integer),
