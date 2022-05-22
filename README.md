@@ -15,7 +15,7 @@ Relies on a bin packing implementation from [3d-bin-container-packing](https://g
 
 ## Instructions
 
-** If you wish to clone or fork and run this project yourself, this is what you need to know.**
+**If you wish to clone or fork and run this project yourself, this is what you need to know.**
 
 This project is ment to serve as a private api for [this webb app](https://github.com/obstrom/packer-app). Thus it takes in a few enviroment variables to set up default API keys.
 
