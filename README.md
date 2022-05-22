@@ -15,10 +15,11 @@ Relies on a bin packing implementation from [3d-bin-container-packing](https://g
 
 ## Instructions
 
-### If you wish to clone or fork and run this project yourself, this is what you need to know.
+** If you wish to clone or fork and run this project yourself, this is what you need to know.**
+
 This project is ment to serve as a private api for [this webb app](https://github.com/obstrom/packer-app). Thus it takes in a few enviroment variables to set up default API keys.
 
-#### Enviroment variables
+### Enviroment variables
 | Key                                             | Value                             | Description |
 | ----------------------------------------------- | --------------------------------- | ---- |
 | application.http.auth-api-key                   | X-API-KEY                         | HTTP Header for API key, recommended to use "X-API-KEY" |
@@ -28,7 +29,7 @@ This project is ment to serve as a private api for [this webb app](https://githu
 
 These variables can be set in your [IDE as Enivorment Variables for the run configuration](https://education.launchcode.org/gis-devops/configurations/02-environment-variables-intellij/index.html), or by adding them to `application.yml` (or a new local application properties file).
 
-#### API endpoints
+### API endpoints
 
 When using the main API endpoints you'll need to supply the API key in the header of the request. 
 In Postman this can be done by selecting `API Key` under the tab `Authorization` for the request and adding the `Key` and `Value` you setup in the enviroment variables.
@@ -38,7 +39,7 @@ In Postman this can be done by selecting `API Key` under the tab `Authorization`
 | `GET` | `/actuator/health` | None | | Monitor API health status |
 | `POST`| `/api/v1/packer/pack` | X-API-KEY | *See request body details below* | Run packing job on request |
 
-##### Packer request body:
+#### Packer request body:
 
 
 ```
