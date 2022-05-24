@@ -25,7 +25,7 @@ This project is ment to serve as a private api for [this webb app](https://githu
 | application.http.auth-api-key                   | X-API-KEY                         | HTTP Header for API key, recommended to use "X-API-KEY" |
 | application.http.auth-api-value                 | some-password-like-value          | Unique API key value |
 | application.http.cors.allowed-origin-primary    | http://localhost:3000             | URL to allow CORS |
-| application.http.cors.allowed-origin-secondary  | https://api-is-deployed-here.com  | Secondary URL to allow CORS |
+| application.http.cors.allowed-origin-secondary  | https://packer-webb-app-url.com   | Secondary URL to allow CORS |
 
 These variables can be set in your [IDE as Enivorment Variables for the run configuration](https://education.launchcode.org/gis-devops/configurations/02-environment-variables-intellij/index.html), or by adding them to `application.yml` (or a new local application properties file).
 
