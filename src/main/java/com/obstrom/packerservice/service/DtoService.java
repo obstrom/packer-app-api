@@ -28,10 +28,10 @@ public class DtoService {
 
         Packager.PackingResults packingResults = packingService.pack(containers, products);
 
-        return mapPackingResultsIntoResponseDto(packingResults);
+        return mapPackingResultsIntoResponseDto(packingResults, packingJobRequestDto.visualizer());
     }
 
-    private PackingJobResponseDto mapPackingResultsIntoResponseDto(Packager.PackingResults result) {
+    private PackingJobResponseDto mapPackingResultsIntoResponseDto(Packager.PackingResults result, boolean visualizer) {
         List<Container> resultsContainers = result.resultsContainers();
 
         List<PackingJobResponseDto.ContainerResponseDto> resultContainers = resultsContainers.stream()
@@ -51,7 +51,7 @@ public class DtoService {
         PackingJobResponseDto.PackingJobVolumeDto packingJobVolumeDto = calculateJobVolumeDto(resultsContainers);
         Integer totalWeight = packingService.calculateJobTotalWeight(resultsContainers);
 
-        PackagingResultVisualizer visualizeData = packingService.generateVisualizerData(resultsContainers);
+        PackagingResultVisualizer visualizeData = (visualizer) ? packingService.generateVisualizerData(resultsContainers) : null;
 
         return new PackingJobResponseDto(
                 packingJobVolumeDto,

@@ -5,5 +5,6 @@ import java.util.List;
 
 public record PackingJobRequestDto(
         @Valid List<ContainerRequestDto> boxes,
-        @Valid List<ItemRequestDto> products) {
+        @Valid List<ItemRequestDto> products,
+        boolean visualizer) {
 }
