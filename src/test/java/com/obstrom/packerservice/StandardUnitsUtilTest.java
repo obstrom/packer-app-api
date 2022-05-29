@@ -19,10 +19,10 @@ class StandardUnitsUtilTest {
         var lengthMeter = Units.METRE;
 
         // then
-        var cubicMillimeter = StandardUnitsUtil.Volume.getVolumeByLengthUnit(lengthMillimeter);
-        var cubicCentimeter = StandardUnitsUtil.Volume.getVolumeByLengthUnit(lengthCentimeter);
-        var cubicDecimeter = StandardUnitsUtil.Volume.getVolumeByLengthUnit(lengthDecimeter);
-        var cubicMeter = StandardUnitsUtil.Volume.getVolumeByLengthUnit(lengthMeter);
+        var cubicMillimeter = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(lengthMillimeter);
+        var cubicCentimeter = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(lengthCentimeter);
+        var cubicDecimeter = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(lengthDecimeter);
+        var cubicMeter = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(lengthMeter);
 
         // should
         assertEquals(cubicMillimeter, MetricPrefix.MILLI(Units.CUBIC_METRE));

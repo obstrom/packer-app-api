@@ -2,6 +2,7 @@ package com.obstrom.packerservice.units;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import tech.units.indriya.quantity.Quantities;
 import tech.units.indriya.unit.Units;
 
 import javax.measure.MetricPrefix;
@@ -18,6 +19,15 @@ public class StandardUnitsUtil {
         METRIC_METER(Units.METRE);
 
         private final Unit<javax.measure.quantity.Length> unit;
+
+        public static int convert(Length sourceUnit, Length targetUnit, int value) {
+            if (sourceUnit.equals(targetUnit)) return value;
+
+            return Quantities
+                    .getQuantity(value, sourceUnit.getUnit())
+                    .to(targetUnit.getUnit())
+                    .getValue().intValue();
+        }
     }
 
     @Getter
@@ -27,6 +37,15 @@ public class StandardUnitsUtil {
         METRIC_KILOGRAM(Units.KILOGRAM);
 
         private final Unit<javax.measure.quantity.Mass> unit;
+
+        public static int convert(Weight sourceUnit, Weight targetUnit, int value) {
+            if (sourceUnit.equals(targetUnit)) return value;
+
+            return Quantities
+                    .getQuantity(value, sourceUnit.getUnit())
+                    .to(targetUnit.getUnit())
+                    .getValue().intValue();
+        }
     }
 
     @Getter
@@ -39,7 +58,24 @@ public class StandardUnitsUtil {
 
         private final Unit<javax.measure.quantity.Volume> unit;
 
-        public static Unit<javax.measure.quantity.Volume> getVolumeByLengthUnit(Unit<javax.measure.quantity.Length> lengthUnit) {
+        public static Volume getVolumeByLength(Length lengthUnit) {
+            switch (lengthUnit) {
+                case METRIC_MILLIMETER -> {
+                    return METRIC_CUBIC_MILLIMETER;
+                }
+                case METRIC_CENTIMETER -> {
+                    return METRIC_CUBIC_CENTIMETER;
+                }
+                case METRIC_DECIMETER -> {
+                    return METRIC_CUBIC_DECIMETER;
+                }
+                default -> {
+                    return METRIC_CUBIC_METER;
+                }
+            }
+        }
+
+        public static Unit<javax.measure.quantity.Volume> getVolumeUnitByLengthUnit(Unit<javax.measure.quantity.Length> lengthUnit) {
             switch (lengthUnit.toString()) {
                 case "mm" -> {
                     return METRIC_CUBIC_MILLIMETER.getUnit();

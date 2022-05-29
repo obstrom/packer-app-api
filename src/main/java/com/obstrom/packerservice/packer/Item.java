@@ -108,7 +108,7 @@ public class Item {
         Objects.requireNonNull(this.lengthUnit);
 
         final double volumeValue = this.getWidth().getValue().doubleValue() * this.getDepth().getValue().doubleValue() * this.getHeight().getValue().doubleValue();
-        final Unit<Volume> volumeUnit = StandardUnitsUtil.Volume.getVolumeByLengthUnit(this.lengthUnit);
+        final Unit<Volume> volumeUnit = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(this.lengthUnit);
 
         this.volume = Quantities.getQuantity(volumeValue, volumeUnit);
         this.volumeUnit = volumeUnit;

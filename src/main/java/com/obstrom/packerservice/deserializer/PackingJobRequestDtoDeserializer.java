@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.obstrom.packerservice.units.StandardUnitsUtil;
 import com.obstrom.packerservice.dto.ContainerRequestDto;
 import com.obstrom.packerservice.dto.ItemRequestDto;
 import com.obstrom.packerservice.dto.PackingJobRequestDto;
@@ -24,11 +23,11 @@ public class PackingJobRequestDtoDeserializer extends JsonDeserializer<PackingJo
     public PackingJobRequestDto deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
         JsonNode node = p.getCodec().readTree(p);
 
-        StandardUnitsUtil.Length length =
+        /*StandardUnitsUtil.Length length =
                 parseUnit(StandardUnitsUtil.Length.class, node, "lengthUnitType");
 
         StandardUnitsUtil.Weight weight =
-                parseUnit(StandardUnitsUtil.Weight.class, node, "weightUnitType");
+                parseUnit(StandardUnitsUtil.Weight.class, node, "weightUnitType");*/
 
         List<ContainerRequestDto> boxes;
         JsonNode boxesNode = node.get("boxes");
@@ -52,7 +51,7 @@ public class PackingJobRequestDtoDeserializer extends JsonDeserializer<PackingJo
             }
         }
 
-        return new PackingJobRequestDto(length, weight, boxes, products);
+        return new PackingJobRequestDto(boxes, products);
     }
 
     private <E extends Enum<E>> E parseUnit(Class<E> type, JsonNode mainNode, String key) {

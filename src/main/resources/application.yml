@@ -5,3 +5,5 @@ spring:
 application:
   packer:
     timeoutMilliseconds: 5000
+    systemLengthUnit: METRIC_MILLIMETER
+    systemWeightUnit: METRIC_GRAM

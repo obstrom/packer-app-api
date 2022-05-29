@@ -5,31 +5,30 @@ import com.github.skjolber.packing.visualizer.api.packaging.PackagingResultVisua
 import com.obstrom.packerservice.config.PackerProperties;
 import com.obstrom.packerservice.dto.*;
 import com.obstrom.packerservice.packer.Packager;
+import com.obstrom.packerservice.units.StandardUnitsUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class DtoService {
 
-    private final PackerProperties packerProperties;
     private final PackingService packingService;
+    private final PackerProperties packerProperties;
 
     public PackingJobResponseDto handlePackingJobRequest(PackingJobRequestDto packingJobRequestDto) {
         List<StackableItem> products = mapItemRequestDtoToStackableItems(packingJobRequestDto.products());
         List<Container> containers = mapItemRequestDtoToContainers(packingJobRequestDto.boxes());
 
-        Packager packager = new Packager(this.packerProperties.getTimeoutMilliseconds(), containers);
-        packager.init();
-        packager.addProducts(products);
-        Packager.PackingResults result = packager.pack();
+        Packager.PackingResults packingResults = packingService.pack(containers, products);
 
-        return mapPackingResultsIntoResponseDto(result);
+        return mapPackingResultsIntoResponseDto(packingResults);
     }
 
     private PackingJobResponseDto mapPackingResultsIntoResponseDto(Packager.PackingResults result) {
@@ -42,13 +41,14 @@ public class DtoService {
                         container.getVolume(),
                         packingService.calculateUsedVolumePercentage(container.getVolume(), container.getStack().getFreeVolumeLoad()),
                         container.getWeight(),
+                        this.packerProperties.getSystemWeightUnit(),
                         stackToResponseDto(container.getStack()),
                         stackValuesToResponseDto(container.getStackValues()),
                         stackPlacementsToResponseDto(container.getStack().getPlacements())
                 ))
                 .toList();
 
-        PackingJobResponseDto.PackingJobVolumeDto packingJobVolumeDto = packingService.calculateJobVolumeDto(resultsContainers);
+        PackingJobResponseDto.PackingJobVolumeDto packingJobVolumeDto = calculateJobVolumeDto(resultsContainers);
         Integer totalWeight = packingService.calculateJobTotalWeight(resultsContainers);
 
         PackagingResultVisualizer visualizeData = packingService.generateVisualizerData(resultsContainers);
@@ -72,6 +72,8 @@ public class DtoService {
                                 dto.getDepth(),
                                 dto.getHeight(),
                                 dto.getWeight(),
+                                dto.getLengthUnitType(),
+                                dto.getWeightUnitType(),
                                 dto.isAllowRotation()),
                         dto.getQuantity()))
                 .collect(Collectors.toList());
@@ -79,13 +81,17 @@ public class DtoService {
 
     private List<Container> mapItemRequestDtoToContainers(List<ContainerRequestDto> items) {
         return items.stream()
-                .map(dto -> Container.newBuilder()
-                        .withId(dto.getId())
-                        .withDescription(dto.getDescription())
-                        .withSize(dto.getWidth(), dto.getDepth(), dto.getHeight())
-                        .withEmptyWeight(dto.getWeight())
-                        .withMaxLoadWeight(dto.getMaxLoad())
-                        .build())
+                .map(dto -> packingService.containerBuilder(
+                        dto.getId(),
+                        dto.getDescription(),
+                        dto.getWidth(),
+                        dto.getDepth(),
+                        dto.getHeight(),
+                        dto.getWeight(),
+                        dto.getMaxLoad(),
+                        dto.getLengthUnitType(),
+                        dto.getWeightUnitType()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -102,6 +108,7 @@ public class DtoService {
                 .orElseThrow(() -> new IllegalStateException("No container stack values in results!"));
 
         return new PackingJobResponseDto.DimensionsResponseDto(
+                this.packerProperties.getSystemLengthUnit(),
                 stackValue.getDx(),
                 stackValue.getDy(),
                 stackValue.getDz()
@@ -117,7 +124,12 @@ public class DtoService {
 
             PackerResultItemPairDto.PackerResultItemDto item = new PackerResultItemPairDto.PackerResultItemDto(
                     placement.getStackable().getDescription(),
-                    new PackingJobResponseDto.DimensionsResponseDto(stackValue.getDx(), stackValue.getDy(), stackValue.getDz())
+                    new PackingJobResponseDto.DimensionsResponseDto(
+                            this.packerProperties.getSystemLengthUnit(),
+                            stackValue.getDx(),
+                            stackValue.getDy(),
+                            stackValue.getDz()
+                    )
             );
 
             int hash = item.hashCode();
@@ -136,6 +148,25 @@ public class DtoService {
                         itemPair.getQuantity()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    private PackingJobResponseDto.PackingJobVolumeDto calculateJobVolumeDto(List<Container> result) {
+        AtomicLong totalVolume = new AtomicLong();
+        AtomicLong totalVolumeRemaining = new AtomicLong();
+
+        result.forEach(container -> {
+            totalVolume.addAndGet(container.getVolume());
+            totalVolumeRemaining.addAndGet(container.getStack().getFreeVolumeLoad());
+        });
+
+        Long totalVolumeUsed = totalVolume.get() - totalVolumeRemaining.get();
+
+        return new PackingJobResponseDto.PackingJobVolumeDto(
+                totalVolume.get(),
+                totalVolumeRemaining.get(),
+                totalVolumeUsed,
+                StandardUnitsUtil.Volume.getVolumeByLength(this.packerProperties.getSystemLengthUnit())
+        );
     }
 
 }

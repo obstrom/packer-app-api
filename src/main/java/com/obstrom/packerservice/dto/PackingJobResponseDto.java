@@ -1,6 +1,7 @@
 package com.obstrom.packerservice.dto;
 
 import com.github.skjolber.packing.visualizer.api.packaging.PackagingResultVisualizer;
+import com.obstrom.packerservice.units.StandardUnitsUtil;
 
 import java.util.List;
 
@@ -15,7 +16,8 @@ public record PackingJobResponseDto(
     public record PackingJobVolumeDto(
             Long totalJobVolume,
             Long totalJobVolumeRemaining,
-            Long totalJobVolumeUsed
+            Long totalJobVolumeUsed,
+            StandardUnitsUtil.Volume unit
     ) {
     }
 
@@ -25,6 +27,7 @@ public record PackingJobResponseDto(
             long totalVolume,
             double volumeUsedPercentage,
             int totalWeight,
+            StandardUnitsUtil.Weight weightUnit,
             ContainerDetailsResponseDto content,
             DimensionsResponseDto dimensions,
             List<ItemResponseDto> items
@@ -46,6 +49,7 @@ public record PackingJobResponseDto(
     }
 
     public record DimensionsResponseDto(
+            StandardUnitsUtil.Length lengthUnit,
             Integer width,
             Integer depth,
             Integer height
