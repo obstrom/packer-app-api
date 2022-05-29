@@ -6,8 +6,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 public class PackerResultItemPairDto {
+
     @Getter
     private final PackerResultItemDto item;
+
     @Getter
     @Setter
     private int quantity;
@@ -17,4 +19,5 @@ public class PackerResultItemPairDto {
             PackingJobResponseDto.DimensionsResponseDto dimensions
     ) {
     }
+
 }
