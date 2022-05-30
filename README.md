@@ -44,8 +44,7 @@ In Postman this can be done by selecting `API Key` under the tab `Authorization`
 *Example:*
 ```
 {
-  "lengthUnitType": (enum) "metric_millimeter" | "meteric_centimeter" | "metric_meter",
-  "weightUnitType": (enum) "metric_gram" | "metric_kilogram"
+  "visualizer": boolean,
   "boxes": [
     {
       "id": string,
@@ -54,7 +53,9 @@ In Postman this can be done by selecting `API Key` under the tab `Authorization`
       "depth": number (integer),
       "height": number (integer),
       "weight": number (integer),
-      "maxLoad": number (integer)
+      "maxLoad": number (integer),
+      "lengthUnitType": (enum) "metric_millimeter" | "meteric_centimeter" | "metric_meter",
+      "weightUnitType": (enum) "metric_gram" | "metric_kilogram"
     },
     ...
    ],
@@ -67,7 +68,9 @@ In Postman this can be done by selecting `API Key` under the tab `Authorization`
       "height": number (integer),
       "weight": number (integer),
       "allowRotation": boolean,
-      "quantity": number (integer)
+      "quantity": number (integer),
+      "lengthUnitType": (enum) "metric_millimeter" | "meteric_centimeter" | "metric_meter",
+      "weightUnitType": (enum) "metric_gram" | "metric_kilogram"
     },
     ...
    ]
