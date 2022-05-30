@@ -49,7 +49,7 @@ public record PackingJobResponseDto(
     }
 
     public record DimensionsResponseDto(
-            StandardUnitsUtil.Length lengthUnit,
+            StandardUnitsUtil.Length unit,
             Integer width,
             Integer depth,
             Integer height

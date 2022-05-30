@@ -7,3 +7,9 @@ application:
     timeoutMilliseconds: 5000
     systemLengthUnit: METRIC_MILLIMETER
     systemWeightUnit: METRIC_GRAM
+
+logging:
+  level:
+    com:
+      obstrom:
+        packerservice: DEBUG

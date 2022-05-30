@@ -7,6 +7,7 @@ import com.obstrom.packerservice.dto.*;
 import com.obstrom.packerservice.packer.Packager;
 import com.obstrom.packerservice.units.StandardUnitsUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class DtoService {
@@ -150,21 +152,24 @@ public class DtoService {
                 .collect(Collectors.toList());
     }
 
+    // TODO - Await update of library to fix volume calculation bug
     private PackingJobResponseDto.PackingJobVolumeDto calculateJobVolumeDto(List<Container> result) {
         AtomicLong totalVolume = new AtomicLong();
         AtomicLong totalVolumeRemaining = new AtomicLong();
+        AtomicLong totalVolumeUsed = new AtomicLong();
 
         result.forEach(container -> {
             totalVolume.addAndGet(container.getVolume());
-            totalVolumeRemaining.addAndGet(container.getStack().getFreeVolumeLoad());
+            totalVolumeRemaining.addAndGet(container.getStack().getFreeVolumeLoad()); // Bug in library, gets casts to Integer and can overflow
+            totalVolumeUsed.addAndGet(container.getLoadVolume());
         });
 
-        Long totalVolumeUsed = totalVolume.get() - totalVolumeRemaining.get();
+        log.debug("Volume calculation successful: Volume[total: {}, used: {}, remaining: {}]", totalVolume.get(), totalVolumeUsed.get(), totalVolumeRemaining.get());
 
         return new PackingJobResponseDto.PackingJobVolumeDto(
                 totalVolume.get(),
                 totalVolumeRemaining.get(),
-                totalVolumeUsed,
+                totalVolumeUsed.get(),
                 StandardUnitsUtil.Volume.getVolumeByLength(this.packerProperties.getSystemLengthUnit())
         );
     }
