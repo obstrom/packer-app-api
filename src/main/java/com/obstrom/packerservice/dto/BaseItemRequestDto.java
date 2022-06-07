@@ -1,6 +1,7 @@
 package com.obstrom.packerservice.dto;
 
-import com.obstrom.packerservice.units.StandardUnitsUtil;
+import com.obstrom.packerservice.units.LengthUnit;
+import com.obstrom.packerservice.units.WeightUnit;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,9 +36,9 @@ public class BaseItemRequestDto {
     private int weight;
 
     @NotNull
-    StandardUnitsUtil.Length lengthUnitType;
+    LengthUnit lengthUnitType;
 
     @NotNull
-    StandardUnitsUtil.Weight weightUnitType;
+    WeightUnit weightUnitType;
 
 }

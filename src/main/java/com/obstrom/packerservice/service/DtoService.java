@@ -8,7 +8,7 @@ import com.obstrom.packerservice.dto.ItemRequestDto;
 import com.obstrom.packerservice.dto.PackerResultItemPairDto;
 import com.obstrom.packerservice.dto.PackingJobResponseDto;
 import com.obstrom.packerservice.packer.PackingResults;
-import com.obstrom.packerservice.units.StandardUnitsUtil;
+import com.obstrom.packerservice.units.VolumeUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -189,7 +189,7 @@ public class DtoService {
                 totalVolume.get(),
                 totalVolumeRemaining.get(),
                 totalVolumeUsed.get(),
-                StandardUnitsUtil.Volume.getVolumeByLength(this.packerProperties.getSystemLengthUnit())
+                VolumeUnit.getVolumeByLength(this.packerProperties.getSystemLengthUnit())
         );
     }
 

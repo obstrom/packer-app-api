@@ -1,6 +1,6 @@
 package com.obstrom.packerservice;
 
-import com.obstrom.packerservice.units.StandardUnitsUtil;
+import com.obstrom.packerservice.units.VolumeUnit;
 import org.junit.jupiter.api.Test;
 import tech.units.indriya.unit.Units;
 
@@ -19,10 +19,10 @@ class StandardUnitsUtilTest {
         var lengthMeter = Units.METRE;
 
         // then
-        var cubicMillimeter = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(lengthMillimeter);
-        var cubicCentimeter = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(lengthCentimeter);
-        var cubicDecimeter = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(lengthDecimeter);
-        var cubicMeter = StandardUnitsUtil.Volume.getVolumeUnitByLengthUnit(lengthMeter);
+        var cubicMillimeter = VolumeUnit.getVolumeUnitByLengthUnit(lengthMillimeter);
+        var cubicCentimeter = VolumeUnit.getVolumeUnitByLengthUnit(lengthCentimeter);
+        var cubicDecimeter = VolumeUnit.getVolumeUnitByLengthUnit(lengthDecimeter);
+        var cubicMeter = VolumeUnit.getVolumeUnitByLengthUnit(lengthMeter);
 
         // should
         assertEquals(cubicMillimeter, MetricPrefix.MILLI(Units.CUBIC_METRE));

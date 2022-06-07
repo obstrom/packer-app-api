@@ -8,14 +8,14 @@ import com.github.skjolber.packing.visualizer.packaging.DefaultPackagingResultVi
 import com.obstrom.packerservice.config.PackerProperties;
 import com.obstrom.packerservice.packer.Packager;
 import com.obstrom.packerservice.packer.PackingResults;
+import com.obstrom.packerservice.units.LengthUnit;
+import com.obstrom.packerservice.units.PackerUnit;
+import com.obstrom.packerservice.units.WeightUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.obstrom.packerservice.units.StandardUnitsUtil.Length;
-import static com.obstrom.packerservice.units.StandardUnitsUtil.Weight;
 
 @Slf4j
 @Service
@@ -39,8 +39,8 @@ public class PackingService {
             int depth,
             int height,
             int weight,
-            Length lengthUnitType,
-            Weight weightUnitType,
+            LengthUnit lengthUnitType,
+            WeightUnit weightUnitType,
             boolean allow3DRotate
     ) {
         if (allow3DRotate) {
@@ -73,8 +73,8 @@ public class PackingService {
             int height,
             int weight,
             int maxLoad,
-            Length lengthUnitType,
-            Weight weightUnitType
+            LengthUnit lengthUnitType,
+            WeightUnit weightUnitType
     ) {
         return Container.newBuilder()
                 .withId(id)
@@ -101,12 +101,12 @@ public class PackingService {
         return visualizer.visualize(containers);
     }
 
-    private int handleLength(Length unit, int value) {
-        return Length.convert(unit, this.packerProperties.getSystemLengthUnit(), value);
+    private int handleLength(LengthUnit unit, int value) {
+        return PackerUnit.convert(unit.getUnit(), this.packerProperties.getSystemLengthUnit().getUnit(), value);
     }
 
-    private int handleWeight(Weight unit, int value) {
-        return Weight.convert(unit, this.packerProperties.getSystemWeightUnit(), value);
+    private int handleWeight(WeightUnit unit, int value) {
+        return PackerUnit.convert(unit.getUnit(), this.packerProperties.getSystemWeightUnit().getUnit(), value);
     }
 
 }
