@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -70,6 +71,7 @@ class PackagerTest {
         // TODO - Update broken test
 
         // given
+        String jobId = UUID.randomUUID().toString();
         List<Container> containers = List.of(
                 Container.newBuilder()
                         .withDescription("Test container 1")
@@ -96,7 +98,7 @@ class PackagerTest {
         );
 
         // when
-        Packager packager = new Packager(1000, containers);
+        Packager packager = new Packager(jobId, 1000, containers);
         packager.init();
         packager.addProduct(stackableItem);
         PackingResults results = packager.pack();

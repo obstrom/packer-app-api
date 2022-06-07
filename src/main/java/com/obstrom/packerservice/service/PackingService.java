@@ -25,8 +25,8 @@ public class PackingService {
     private final DefaultPackagingResultVisualizerFactory visualizer;
     private final PackerProperties packerProperties;
 
-    protected PackingResults pack(List<Container> containers, List<StackableItem> products) {
-        Packager packager = new Packager(this.packerProperties.getTimeoutMilliseconds(), containers);
+    protected PackingResults pack(String jobId, List<Container> containers, List<StackableItem> products) {
+        Packager packager = new Packager(jobId, this.packerProperties.getTimeoutMilliseconds(), containers);
         packager.init();
         packager.addProducts(products);
         return packager.pack();

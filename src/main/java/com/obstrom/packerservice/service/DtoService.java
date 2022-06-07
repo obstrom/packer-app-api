@@ -3,7 +3,10 @@ package com.obstrom.packerservice.service;
 import com.github.skjolber.packing.api.*;
 import com.github.skjolber.packing.visualizer.api.packaging.PackagingResultVisualizer;
 import com.obstrom.packerservice.config.PackerProperties;
-import com.obstrom.packerservice.dto.*;
+import com.obstrom.packerservice.dto.ContainerRequestDto;
+import com.obstrom.packerservice.dto.ItemRequestDto;
+import com.obstrom.packerservice.dto.PackerResultItemPairDto;
+import com.obstrom.packerservice.dto.PackingJobResponseDto;
 import com.obstrom.packerservice.packer.PackingResults;
 import com.obstrom.packerservice.units.StandardUnitsUtil;
 import lombok.AllArgsConstructor;
@@ -24,80 +27,87 @@ public class DtoService {
     private final PackingService packingService;
     private final PackerProperties packerProperties;
 
-    public PackingJobResponseDto handlePackingJobRequest(PackingJobRequestDto packingJobRequestDto) {
-        List<StackableItem> products = mapItemRequestDtoToStackableItems(packingJobRequestDto.products());
-        List<Container> containers = mapItemRequestDtoToContainers(packingJobRequestDto.boxes());
-
-        PackingResults packingResults = packingService.pack(containers, products);
-
-        return mapPackingResultsIntoResponseDto(packingResults, packingJobRequestDto.visualizer());
-    }
-
-    private PackingJobResponseDto mapPackingResultsIntoResponseDto(PackingResults result, boolean visualizer) {
-        List<Container> resultsContainers = result.resultsContainers();
-
-        List<PackingJobResponseDto.ContainerResponseDto> resultContainers = resultsContainers.stream()
-                .map(container -> new PackingJobResponseDto.ContainerResponseDto(
-                        container.getId(),
-                        container.getDescription(),
-                        container.getVolume(),
-                        packingService.calculateUsedVolumePercentage(container.getVolume(), container.getStack().getFreeVolumeLoad()),
-                        container.getWeight(),
-                        this.packerProperties.getSystemWeightUnit(),
-                        stackToResponseDto(container.getStack()),
-                        stackValuesToResponseDto(container.getStackValues()),
-                        stackPlacementsToResponseDto(container.getStack().getPlacements())
-                ))
-                .toList();
-
-        PackingJobResponseDto.PackingJobVolumeDto packingJobVolumeDto = calculateJobVolumeDto(resultsContainers);
-        Integer totalWeight = packingService.calculateJobTotalWeight(resultsContainers);
-
-        PackagingResultVisualizer visualizeData = (visualizer) ? packingService.generateVisualizerData(resultsContainers) : null;
+    public PackingJobResponseDto mapPackingJobResponseDto(PackingResults result, boolean visualizer) {
+        PackagingResultVisualizer visualizeData = (visualizer)
+                ? packingService.generateVisualizerData(result.resultsContainers())
+                : null;
 
         return new PackingJobResponseDto(
-                packingJobVolumeDto,
-                totalWeight,
+                mapPackingJobVolumeDto(result.resultsContainers()),
+                packingService.calculateJobTotalWeight(result.resultsContainers()),
                 result.runtimeMilliseconds(),
-                resultContainers,
+                mapContainerResponseDtoList(result.resultsContainers()),
                 visualizeData
         );
     }
 
-    private List<StackableItem> mapItemRequestDtoToStackableItems(List<ItemRequestDto> items) {
+    public List<StackableItem> mapStackableItemList(List<ItemRequestDto> items) {
         return items.stream()
-                .map(dto -> new StackableItem(
-                        packingService.boxBuilder(
-                                dto.getId(),
-                                dto.getDescription(),
-                                dto.getWidth(),
-                                dto.getDepth(),
-                                dto.getHeight(),
-                                dto.getWeight(),
-                                dto.getLengthUnitType(),
-                                dto.getWeightUnitType(),
-                                dto.isAllowRotation()),
-                        dto.getQuantity()))
+                .map(this::mapStackableItem)
                 .collect(Collectors.toList());
     }
 
-    private List<Container> mapItemRequestDtoToContainers(List<ContainerRequestDto> items) {
+    public List<Container> mapContainerList(List<ContainerRequestDto> items) {
         return items.stream()
-                .map(dto -> packingService.containerBuilder(
+                .map(this::mapContainer)
+                .collect(Collectors.toList());
+    }
+
+    public List<PackingJobResponseDto.ContainerResponseDto> mapContainerResponseDtoList(List<Container> resultsContainers) {
+        return resultsContainers.stream()
+                .map(this::mapContainerResponseDto)
+                .toList();
+    }
+
+    public PackingJobResponseDto.ContainerResponseDto mapContainerResponseDto(Container container) {
+        double volumeUsedPercentage = packingService.calculateUsedVolumePercentage(
+                container.getVolume(),
+                container.getStack().getFreeVolumeLoad()
+        );
+
+        return new PackingJobResponseDto.ContainerResponseDto(
+                container.getId(),
+                container.getDescription(),
+                container.getVolume(),
+                volumeUsedPercentage,
+                container.getWeight(),
+                this.packerProperties.getSystemWeightUnit(),
+                mapContainerDetailsResponseDto(container.getStack()),
+                mapDimensionsResponseDto(container.getStackValues()),
+                mapItemResponseDtoList(container.getStack().getPlacements())
+        );
+    }
+
+    public StackableItem mapStackableItem(ItemRequestDto dto) {
+        return new StackableItem(
+                packingService.boxBuilder(
                         dto.getId(),
                         dto.getDescription(),
                         dto.getWidth(),
                         dto.getDepth(),
                         dto.getHeight(),
                         dto.getWeight(),
-                        dto.getMaxLoad(),
                         dto.getLengthUnitType(),
-                        dto.getWeightUnitType()
-                ))
-                .collect(Collectors.toList());
+                        dto.getWeightUnitType(),
+                        dto.isAllowRotation()),
+                dto.getQuantity());
     }
 
-    private PackingJobResponseDto.ContainerDetailsResponseDto stackToResponseDto(Stack stack) {
+    public Container mapContainer(ContainerRequestDto dto) {
+        return packingService.containerBuilder(
+                dto.getId(),
+                dto.getDescription(),
+                dto.getWidth(),
+                dto.getDepth(),
+                dto.getHeight(),
+                dto.getWeight(),
+                dto.getMaxLoad(),
+                dto.getLengthUnitType(),
+                dto.getWeightUnitType()
+        );
+    }
+
+    public PackingJobResponseDto.ContainerDetailsResponseDto mapContainerDetailsResponseDto(Stack stack) {
         return new PackingJobResponseDto.ContainerDetailsResponseDto(
                 stack.getSize(),
                 stack.getFreeVolumeLoad(),
@@ -105,7 +115,7 @@ public class DtoService {
         );
     }
 
-    private PackingJobResponseDto.DimensionsResponseDto stackValuesToResponseDto(ContainerStackValue[] values) {
+    public PackingJobResponseDto.DimensionsResponseDto mapDimensionsResponseDto(ContainerStackValue[] values) {
         ContainerStackValue stackValue = Arrays.stream(values).findFirst()
                 .orElseThrow(() -> new IllegalStateException("No container stack values in results!"));
 
@@ -117,22 +127,25 @@ public class DtoService {
         );
     }
 
-    private List<PackingJobResponseDto.ItemResponseDto> stackPlacementsToResponseDto(List<StackPlacement> placements) {
+    public List<PackingJobResponseDto.ItemResponseDto> mapItemResponseDtoList(List<StackPlacement> placements) {
+        return createPackerResultItemPairDtoHashMap(placements)
+                .values().stream()
+                .map(itemPair -> new PackingJobResponseDto.ItemResponseDto(
+                        itemPair.getItem().description(),
+                        itemPair.getItem().dimensions(),
+                        itemPair.getQuantity()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public HashMap<Integer, PackerResultItemPairDto> createPackerResultItemPairDtoHashMap(List<StackPlacement> placements) {
         HashMap<Integer, PackerResultItemPairDto> itemMap = new HashMap<>();
 
         placements.forEach(placement -> {
             StackValue stackValue = Arrays.stream(placement.getStackable().getStackValues()).findFirst()
                     .orElseThrow(() -> new IllegalStateException("No item stack values in results!"));
 
-            PackerResultItemPairDto.PackerResultItemDto item = new PackerResultItemPairDto.PackerResultItemDto(
-                    placement.getStackable().getDescription(),
-                    new PackingJobResponseDto.DimensionsResponseDto(
-                            this.packerProperties.getSystemLengthUnit(),
-                            stackValue.getDx(),
-                            stackValue.getDy(),
-                            stackValue.getDz()
-                    )
-            );
+            PackerResultItemPairDto.PackerResultItemDto item = mapPackerResultItemDto(placement, stackValue);
 
             int hash = item.hashCode();
             if (!itemMap.containsKey(hash)) {
@@ -143,17 +156,23 @@ public class DtoService {
             }
         });
 
-        return itemMap.values().stream()
-                .map(itemPair -> new PackingJobResponseDto.ItemResponseDto(
-                        itemPair.getItem().description(),
-                        itemPair.getItem().dimensions(),
-                        itemPair.getQuantity()
-                ))
-                .collect(Collectors.toList());
+        return itemMap;
+    }
+
+    public PackerResultItemPairDto.PackerResultItemDto mapPackerResultItemDto(StackPlacement placement, StackValue stackValue) {
+        return new PackerResultItemPairDto.PackerResultItemDto(
+                placement.getStackable().getDescription(),
+                new PackingJobResponseDto.DimensionsResponseDto(
+                        this.packerProperties.getSystemLengthUnit(),
+                        stackValue.getDx(),
+                        stackValue.getDy(),
+                        stackValue.getDz()
+                )
+        );
     }
 
     // TODO - Await update of library to fix volume calculation bug
-    private PackingJobResponseDto.PackingJobVolumeDto calculateJobVolumeDto(List<Container> result) {
+    public PackingJobResponseDto.PackingJobVolumeDto mapPackingJobVolumeDto(List<Container> result) {
         AtomicLong totalVolume = new AtomicLong();
         AtomicLong totalVolumeRemaining = new AtomicLong();
         AtomicLong totalVolumeUsed = new AtomicLong();
