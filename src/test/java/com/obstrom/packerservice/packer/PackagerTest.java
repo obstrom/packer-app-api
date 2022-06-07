@@ -99,7 +99,7 @@ class PackagerTest {
         Packager packager = new Packager(1000, containers);
         packager.init();
         packager.addProduct(stackableItem);
-        Packager.PackingResults results = packager.pack();
+        PackingResults results = packager.pack();
         List<Container> resultContainers = results.resultsContainers();
 
         // then

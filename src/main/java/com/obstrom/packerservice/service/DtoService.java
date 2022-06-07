@@ -4,7 +4,7 @@ import com.github.skjolber.packing.api.*;
 import com.github.skjolber.packing.visualizer.api.packaging.PackagingResultVisualizer;
 import com.obstrom.packerservice.config.PackerProperties;
 import com.obstrom.packerservice.dto.*;
-import com.obstrom.packerservice.packer.Packager;
+import com.obstrom.packerservice.packer.PackingResults;
 import com.obstrom.packerservice.units.StandardUnitsUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +28,12 @@ public class DtoService {
         List<StackableItem> products = mapItemRequestDtoToStackableItems(packingJobRequestDto.products());
         List<Container> containers = mapItemRequestDtoToContainers(packingJobRequestDto.boxes());
 
-        Packager.PackingResults packingResults = packingService.pack(containers, products);
+        PackingResults packingResults = packingService.pack(containers, products);
 
         return mapPackingResultsIntoResponseDto(packingResults, packingJobRequestDto.visualizer());
     }
 
-    private PackingJobResponseDto mapPackingResultsIntoResponseDto(Packager.PackingResults result, boolean visualizer) {
+    private PackingJobResponseDto mapPackingResultsIntoResponseDto(PackingResults result, boolean visualizer) {
         List<Container> resultsContainers = result.resultsContainers();
 
         List<PackingJobResponseDto.ContainerResponseDto> resultContainers = resultsContainers.stream()

@@ -7,6 +7,7 @@ import com.github.skjolber.packing.visualizer.api.packaging.PackagingResultVisua
 import com.github.skjolber.packing.visualizer.packaging.DefaultPackagingResultVisualizerFactory;
 import com.obstrom.packerservice.config.PackerProperties;
 import com.obstrom.packerservice.packer.Packager;
+import com.obstrom.packerservice.packer.PackingResults;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class PackingService {
     private final DefaultPackagingResultVisualizerFactory visualizer;
     private final PackerProperties packerProperties;
 
-    protected Packager.PackingResults pack(List<Container> containers, List<StackableItem> products) {
+    protected PackingResults pack(List<Container> containers, List<StackableItem> products) {
         Packager packager = new Packager(this.packerProperties.getTimeoutMilliseconds(), containers);
         packager.init();
         packager.addProducts(products);
