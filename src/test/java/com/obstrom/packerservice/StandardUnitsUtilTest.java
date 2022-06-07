@@ -1,6 +1,6 @@
 package com.obstrom.packerservice;
 
-import com.obstrom.packerservice.units.VolumeUnit;
+import com.obstrom.packerservice.core.units.VolumeUnit;
 import org.junit.jupiter.api.Test;
 import tech.units.indriya.unit.Units;
 
