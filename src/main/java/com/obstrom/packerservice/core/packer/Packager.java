@@ -5,7 +5,6 @@ import com.github.skjolber.packing.api.StackableItem;
 import com.github.skjolber.packing.packer.PackagerException;
 import com.github.skjolber.packing.packer.laff.LargestAreaFitFirstPackager;
 import com.obstrom.packerservice.api.exception.JobTimeoutException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
@@ -14,12 +13,12 @@ import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
 public class Packager {
 
     private final String jobId;
     private final long timeoutMilliseconds;
-    private final List<Container> containers;
+
+    private final List<Container> containers = new ArrayList<>();
     private final List<StackableItem> products = new ArrayList<>();
 
     private LargestAreaFitFirstPackager packager = null;
@@ -29,6 +28,16 @@ public class Packager {
     private boolean isFinished = false;
 
     private List<Container> result = List.of();
+
+    public Packager(String jobId, long timeoutMilliseconds) {
+        this.jobId = jobId;
+        this.timeoutMilliseconds = timeoutMilliseconds;
+    }
+
+    public Packager(String jobId, long timeoutMilliseconds, List<Container> containers) {
+        this(jobId, timeoutMilliseconds);
+        this.containers.addAll(containers);
+    }
 
     public void init() {
         if (containers.isEmpty())
@@ -49,6 +58,8 @@ public class Packager {
     public PackingResults pack() {
         if (!isInitialized)
             throw new PackagerException("Packager '%s' is not initialized. Initialize the packer first.".formatted(jobId));
+        if (products.isEmpty())
+            throw new PackagerException("Packager '%s' has no products to pack!".formatted(jobId));
         if (isFinished) return new PackingResults(0L, result);
 
         runNewStopWatch();
@@ -67,11 +78,20 @@ public class Packager {
 
     public void addContainer(Container container) {
         if (isInitialized)
-            throw new PackagerException("Packager '%s' is already initialized with given containers. Create a new packager instead.".formatted(jobId));
+            throw new PackagerException("Packager '%s' is already initialized with containers. Create a new packager instead.".formatted(jobId));
 
         containers.add(container);
         containers.sort(Comparator.comparingLong(Container::getVolume));
         log.debug("container added to packer '{}': {}", jobId, container.toString());
+    }
+
+    public void addContainers(List<Container> containers) {
+        if (isInitialized)
+            throw new PackagerException("Packager '%s' is already initialized with containers. Create a new packager instead.".formatted(jobId));
+
+        this.containers.addAll(containers);
+        this.containers.sort(Comparator.comparingLong(Container::getVolume));
+        log.debug("{} containers added to packer '{}'", containers.size(), jobId);
     }
 
     public void addProduct(StackableItem stackableItem) {
@@ -81,7 +101,7 @@ public class Packager {
 
     public void addProducts(List<StackableItem> stackableItems) {
         products.addAll(stackableItems);
-        log.debug("{} products added to packer '{}'", jobId, stackableItems.size());
+        log.debug("{} products added to packer '{}'", stackableItems.size(), jobId);
     }
 
     private Long getDeadline() {
