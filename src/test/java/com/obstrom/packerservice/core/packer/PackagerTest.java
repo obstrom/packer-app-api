@@ -1,11 +1,9 @@
-package com.obstrom.packerservice.packer;
+package com.obstrom.packerservice.core.packer;
 
 import com.github.skjolber.packing.api.Box;
 import com.github.skjolber.packing.api.Container;
 import com.github.skjolber.packing.api.StackableItem;
 import com.github.skjolber.packing.packer.laff.LargestAreaFitFirstPackager;
-import com.obstrom.packerservice.core.packer.Packager;
-import com.obstrom.packerservice.core.packer.PackingResults;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
