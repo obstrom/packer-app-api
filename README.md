@@ -8,7 +8,7 @@
 API for calculating and finding the optimal packing solution from a range of packages/boxes and products.
 Uses the [LAFF (Largest Area Fit First) bin packing algorithm](https://www.parkbeachsystems.com/images/usps/An_Efficient_Algorithm_for_3D_Rectangular_Box_Packing.pdf) to optimize packing solution.
 
-This is part of my thesis project at Stockholms Tekniska Insitut.
+__Note: This is a demo project and part of my thesis project at Stockholms Tekniska Insitut. Feel free to use this source code however you'd like, but no updates or support may be given!__
 
 Built using Java 17 and Spring Boot.
 Relies on a bin packing implementation from [3d-bin-container-packing](https://github.com/skjolber/3d-bin-container-packing).
